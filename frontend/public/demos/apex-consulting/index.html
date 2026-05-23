@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apex Consulting - Premium Corporate Advisor & Business Consulting Template</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            apex: {
+              blue: '#0B3C5D',
+              gold: '#D4AF37',
+              dark: '#111111',
+              card: '#1C1C1C'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    [x-cloak] { display: none !important; }
+  </style>
+</head>
+<body class="bg-neutral-900 text-neutral-100 font-sans min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white"
+      x-data="apexState()">
+
+  <!-- 🔔 Global Notification Toast -->
+  <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 max-w-sm pointer-events-none">
+    <div x-show="toast.visible"
+         x-transition:enter="transition ease-out duration-300 transform"
+         x-transition:enter-start="translate-y-2 opacity-0 scale-95"
+         x-transition:enter-end="translate-y-0 opacity-100 scale-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="bg-neutral-950 border border-blue-500/30 text-white rounded-lg px-4 py-3.5 shadow-2xl flex items-center gap-3 pointer-events-auto">
+      <span class="material-symbols-outlined text-blue-500">query_stats</span>
+      <div class="flex-grow text-xs text-left">
+        <p class="font-bold text-blue-100" x-text="toast.title"></p>
+        <p class="text-neutral-400 mt-0.5" x-text="toast.message"></p>
+      </div>
+      <button @click="toast.visible = false" class="text-neutral-400 hover:text-white">
+        <span class="material-symbols-outlined text-lg">close</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 🧭 Sticky Glassmorphic Header -->
+  <header class="fixed top-0 left-0 w-full z-40 bg-neutral-900/90 backdrop-blur-xl border-b border-neutral-800">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+      <!-- Logo -->
+      <a href="#" @click.prevent="currentTab = 'home'" class="font-extrabold text-2xl tracking-tight text-blue-500 flex items-center gap-2">
+        <span class="bg-blue-600 w-3 h-3 rounded-full animate-pulse"></span>
+        APEX CONSULTING
+      </a>
+
+      <!-- Navigation links (tabs clickable switching) -->
+      <nav class="hidden md:flex space-x-10 text-xs font-semibold tracking-[0.2em] uppercase text-neutral-400">
+        <a href="#" @click.prevent="currentTab = 'home'" :class="currentTab === 'home' ? 'text-blue-500 border-b border-blue-500 pb-1' : 'hover:text-blue-500 transition-colors'">Beranda</a>
+        <a href="#" @click.prevent="currentTab = 'services'" :class="currentTab === 'services' ? 'text-blue-500 border-b border-blue-500 pb-1' : 'hover:text-blue-500 transition-colors'">Layanan Strategis</a>
+        <a href="#" @click.prevent="currentTab = 'diagnose'" :class="currentTab === 'diagnose' ? 'text-blue-500 border-b border-blue-500 pb-1' : 'hover:text-blue-500 transition-colors'">Diagnosis Bisnis</a>
+      </nav>
+
+      <!-- Action Booking button -->
+      <button @click="currentTab = 'diagnose'" class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold uppercase tracking-[0.2em] px-6 py-3 rounded transition-all hover:scale-105">
+        Mulai Diagnosis
+      </button>
+    </div>
+  </header>
+
+  <!-- 🧖‍♀️ Router screens -->
+  <main class="flex-grow pt-24">
+
+    <!-- Screen 1: Home Page -->
+    <template x-if="currentTab === 'home'">
+      <div>
+        <!-- Hero section -->
+        <section class="relative min-h-[85vh] flex items-center justify-center px-6 overflow-hidden bg-gradient-to-b from-neutral-900 via-neutral-950 to-neutral-900">
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.06)_0%,transparent_70%)]"></div>
+          <div class="relative max-w-4xl mx-auto text-center z-10 px-4">
+            <span class="text-blue-500 font-bold tracking-[0.3em] uppercase text-xs block mb-4">PENASIHAT STRATEGIS KELAS DUNIA</span>
+            <h1 class="text-5xl md:text-8xl font-black mb-8 leading-tight tracking-tight text-white uppercase">
+              Akselerasikan Skala Bisnis Anda
+            </h1>
+            <p class="text-neutral-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+              Kami mendampingi korporasi nasional & startup digital untuk merumuskan strategi inovasi, ekspansi pasar, efisiensi operasional, dan transformasi digital.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <button @click="currentTab = 'services'" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded font-bold text-xs uppercase tracking-widest transition-all hover:scale-105 shadow-md">Layanan Kami</button>
+              <button @click="currentTab = 'diagnose'" class="border border-neutral-700 hover:border-blue-500 hover:text-blue-500 text-white px-8 py-4 rounded font-bold text-xs uppercase tracking-widest transition-all">Analisis Diagnosis Bisnis</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="py-20 bg-neutral-950 border-y border-neutral-800 text-center">
+          <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div>
+              <div class="text-4xl md:text-5xl font-black text-white mb-2">99%</div>
+              <div class="text-neutral-500 text-[10px] font-bold uppercase tracking-widest">Tingkat Keberhasilan Klien</div>
+            </div>
+            <div>
+              <div class="text-4xl md:text-5xl font-black text-white mb-2">150+</div>
+              <div class="text-neutral-500 text-[10px] font-bold uppercase tracking-widest">Kemitraan Korporasi Aktif</div>
+            </div>
+            <div>
+              <div class="text-4xl md:text-5xl font-black text-white mb-2">Rp 4.5T+</div>
+              <div class="text-neutral-500 text-[10px] font-bold uppercase tracking-widest">Biaya Operasional Diefisienkan</div>
+            </div>
+            <div>
+              <div class="text-4xl md:text-5xl font-black text-white mb-2">35+</div>
+              <div class="text-neutral-500 text-[10px] font-bold uppercase tracking-widest">Konsultan Ahli Bersertifikat</div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </template>
+
+    <!-- Screen 2: Services List -->
+    <template x-if="currentTab === 'services'">
+      <section class="py-20 px-6 bg-neutral-900">
+        <div class="max-w-6xl mx-auto">
+          <div class="text-center max-w-xl mx-auto mb-16">
+            <span class="text-blue-500 font-bold tracking-[0.25em] text-xs uppercase">APEX EXPERTISE</span>
+            <h2 class="text-3xl md:text-5xl font-extrabold mt-2 uppercase">Layanan Strategis Utama</h2>
+            <div class="w-12 h-1 bg-blue-600 mx-auto mt-4"></div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <template x-for="item in services" :key="item.id">
+              <div class="bg-neutral-950 border border-neutral-800 rounded-xl p-8 hover:border-blue-500/50 transition-all duration-300 flex flex-col justify-between">
+                <div>
+                  <div class="bg-blue-600/10 w-12 h-12 rounded flex items-center justify-center text-blue-500 font-bold mb-6 text-xl" x-text="'0' + item.id"></div>
+                  <h3 class="text-xl font-bold text-white mb-3" x-text="item.name"></h3>
+                  <p class="text-neutral-400 text-xs leading-relaxed font-light mb-6" x-text="item.desc"></p>
+                </div>
+                
+                <div class="pt-4 border-t border-neutral-800 flex justify-between items-center">
+                  <span class="text-[9px] font-bold text-neutral-500 uppercase tracking-wider" x-text="item.category"></span>
+                  <button @click="selectServiceForDiagnosis(item)" class="bg-blue-600 hover:bg-blue-700 text-white text-[9px] font-bold uppercase tracking-widest px-4 py-2 rounded">Pilih Layanan</button>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- Screen 3: Interactive Questionnaire Diagnostic Tool -->
+    <template x-if="currentTab === 'diagnose'">
+      <section class="py-20 px-6 bg-neutral-900">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          
+          <!-- Left: Multi-step Quiz -->
+          <div class="lg:col-span-7 bg-neutral-950 border border-neutral-800 rounded-2xl p-8 text-left shadow-lg">
+            
+            <!-- Step Indicators -->
+            <div class="flex justify-between items-center mb-10 border-b border-neutral-900 pb-4">
+              <h3 class="font-bold text-xs uppercase tracking-widest text-neutral-400">Diagnosis Bisnis</h3>
+              <div class="flex gap-2">
+                <span :class="quizStep >= 1 ? 'bg-blue-600' : 'bg-neutral-800'" class="w-8 h-1 rounded-full transition-all"></span>
+                <span :class="quizStep >= 2 ? 'bg-blue-600' : 'bg-neutral-800'" class="w-8 h-1 rounded-full transition-all"></span>
+                <span :class="quizStep >= 3 ? 'bg-blue-600' : 'bg-neutral-800'" class="w-8 h-1 rounded-full transition-all"></span>
+              </div>
+            </div>
+
+            <!-- Quiz Step 1: Scale of business -->
+            <div x-show="quizStep === 1">
+              <h4 class="text-lg font-bold text-white mb-6">Pertanyaan 1: Berapa total jumlah karyawan aktif di perusahaan Anda saat ini?</h4>
+              <div class="space-y-4">
+                <label class="flex items-center gap-3 p-4 bg-neutral-900 border border-neutral-800 rounded-xl cursor-pointer hover:border-blue-500/50 transition-colors">
+                  <input type="radio" name="scale" value="50" x-model="quizAnswers.scale" class="accent-blue-600 w-4 h-4" />
+                  <span class="text-xs font-semibold">1 - 50 Karyawan (Skala Kecil / Menengah)</span>
+                </label>
+                <label class="flex items-center gap-3 p-4 bg-neutral-900 border border-neutral-800 rounded-xl cursor-pointer hover:border-blue-500/50 transition-colors">
+                  <input type="radio" name="scale" value="250" x-model="quizAnswers.scale" class="accent-blue-600 w-4 h-4" />
+                  <span class="text-xs font-semibold">51 - 250 Karyawan (Skala Menengah / Besar)</span>
+                </label>
+                <label class="flex items-center gap-3 p-4 bg-neutral-900 border border-neutral-800 rounded-xl cursor-pointer hover:border-blue-500/50 transition-colors">
+                  <input type="radio" name="scale" value="500" x-model="quizAnswers.scale" class="accent-blue-600 w-4 h-4" />
+                  <span class="text-xs font-semibold">Lebih dari 250 Karyawan (Skala Korporasi Besar)</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Quiz Step 2: Bottleneck -->
+            <div x-show="quizStep === 2">
+              <h4 class="text-lg font-bold text-white mb-6">Pertanyaan 2: Apa hambatan utama yang saat ini paling membatasi pertumbuhan bisnis Anda?</h4>
+              <div class="space-y-4">
+                <label class="flex items-center gap-3 p-4 bg-neutral-900 border border-neutral-800 rounded-xl cursor-pointer hover:border-blue-500/50 transition-colors">
+                  <input type="radio" name="bottleneck" value="tech" x-model="quizAnswers.bottleneck" class="accent-blue-600 w-4 h-4" />
+                  <span class="text-xs font-semibold">Sistem Teknologi Lambat / Tidak Terintegrasi</span>
+                </label>
+                <label class="flex items-center gap-3 p-4 bg-neutral-900 border border-neutral-800 rounded-xl cursor-pointer hover:border-blue-500/50 transition-colors">
+                  <input type="radio" name="bottleneck" value="cost" x-model="quizAnswers.bottleneck" class="accent-blue-600 w-4 h-4" />
+                  <span class="text-xs font-semibold">Biaya Operasional Terlalu Tinggi / Margin Rendah</span>
+                </label>
+                <label class="flex items-center gap-3 p-4 bg-neutral-900 border border-neutral-800 rounded-xl cursor-pointer hover:border-blue-500/50 transition-colors">
+                  <input type="radio" name="bottleneck" value="revenue" x-model="quizAnswers.bottleneck" class="accent-blue-600 w-4 h-4" />
+                  <span class="text-xs font-semibold">Hambatan dalam Ekspansi Pasar & Penjualan Stagnan</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Quiz Step 3: Innovation Budget -->
+            <div x-show="quizStep === 3">
+              <h4 class="text-lg font-bold text-white mb-6">Pertanyaan 3: Berapa estimasi alokasi budget inovasi strategis triwulanan perusahaan?</h4>
+              <div class="space-y-4">
+                <label class="flex items-center gap-3 p-4 bg-neutral-900 border border-neutral-800 rounded-xl cursor-pointer hover:border-blue-500/50 transition-colors">
+                  <input type="radio" name="budget" value="low" x-model="quizAnswers.budget" class="accent-blue-600 w-4 h-4" />
+                  <span class="text-xs font-semibold">Kurang dari Rp 100 Juta</span>
+                </label>
+                <label class="flex items-center gap-3 p-4 bg-neutral-900 border border-neutral-800 rounded-xl cursor-pointer hover:border-blue-500/50 transition-colors">
+                  <input type="radio" name="budget" value="mid" x-model="quizAnswers.budget" class="accent-blue-600 w-4 h-4" />
+                  <span class="text-xs font-semibold">Rp 100 Juta - Rp 500 Juta</span>
+                </label>
+                <label class="flex items-center gap-3 p-4 bg-neutral-900 border border-neutral-800 rounded-xl cursor-pointer hover:border-blue-500/50 transition-colors">
+                  <input type="radio" name="budget" value="high" x-model="quizAnswers.budget" class="accent-blue-600 w-4 h-4" />
+                  <span class="text-xs font-semibold">Lebih dari Rp 500 Juta</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Next / Prev Buttons -->
+            <div class="flex justify-between items-center mt-10 pt-6 border-t border-neutral-900">
+              <button @click="quizStep = Math.max(1, quizStep - 1)"
+                      :disabled="quizStep === 1"
+                      :class="quizStep === 1 ? 'text-neutral-600 cursor-not-allowed' : 'text-white hover:text-blue-500'"
+                      class="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 focus:outline-none">
+                <span class="material-symbols-outlined text-sm">arrow_back</span> Kembali
+              </button>
+
+              <button x-show="quizStep < 3"
+                      @click="quizStep++"
+                      class="bg-blue-600 hover:bg-blue-700 text-white font-bold uppercase tracking-widest px-6 py-3 rounded text-[10px] flex items-center gap-1">
+                Lanjut <span class="material-symbols-outlined text-sm">arrow_forward</span>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Right: Real-time ROI Savings calculator -->
+          <div class="lg:col-span-5 bg-neutral-950 border border-neutral-800 rounded-2xl p-8 shadow-lg text-left">
+            <h3 class="text-xl font-bold text-white mb-6 border-b border-neutral-900 pb-3">Kalkulator Estimasi Dampak (ROI)</h3>
+            
+            <div class="space-y-6">
+              <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
+                <span class="text-neutral-500 text-[10px] font-bold uppercase tracking-widest block mb-2">Estimasi Penghematan Operasional Triwulanan</span>
+                <div class="text-3xl font-black text-blue-500" x-text="calculateEstimatedSavings()"></div>
+                <p class="text-neutral-500 text-[10px] mt-2 leading-relaxed">Dihitung otomatis berdasarkan skala operasional karyawan dan jenis bottleneck utama yang dihadapi.</p>
+              </div>
+
+              <!-- Contact Form -->
+              <form @submit.prevent="submitDiagnosisForm()" class="space-y-4">
+                <div>
+                  <label class="block text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-2">Nama Lengkap</label>
+                  <input required type="text" x-model="leadForm.name" placeholder="Nama Anda" class="w-full bg-neutral-900 border border-neutral-800 focus:border-blue-500 focus:outline-none rounded px-3 py-2 text-xs" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-2">Email Bisnis</label>
+                  <input required type="email" x-model="leadForm.email" placeholder="nama@perusahaan.com" class="w-full bg-neutral-900 border border-neutral-800 focus:border-blue-500 focus:outline-none rounded px-3 py-2 text-xs" />
+                </div>
+                
+                <button type="submit"
+                        :disabled="quizStep !== 3"
+                        :class="quizStep !== 3 ? 'bg-neutral-800 text-neutral-500 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer'"
+                        class="w-full font-bold uppercase tracking-widest py-4 text-xs rounded shadow-md transition-all">
+                  Kirim & Dapatkan Roadmap Solusi
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </template>
+
+  </main>
+
+  <!-- 🎟️ Diagnostic Roadmap Receipt Modal -->
+  <div class="fixed inset-0 z-50 flex items-center justify-center overflow-hidden p-6" x-show="receiptOpen" x-cloak>
+    <!-- Overlay backdrop -->
+    <div class="absolute inset-0 bg-black/85 transition-opacity duration-300" @click="receiptOpen = false"></div>
+
+    <div class="bg-neutral-900 border border-blue-500/30 rounded-2xl shadow-2xl max-w-md w-full p-8 relative z-10 text-center"
+         x-show="receiptOpen"
+         x-transition:enter="ease-out duration-300 transform"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="ease-in duration-200 transform">
+      
+      <!-- Icon check -->
+      <div class="w-16 h-16 bg-blue-600/10 border border-blue-500/40 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-500 animate-pulse">
+        <span class="material-symbols-outlined text-3xl font-fill">verified</span>
+      </div>
+
+      <h2 class="text-2xl font-bold text-white uppercase tracking-tight">Diagnosis Siap Diterima!</h2>
+      <p class="text-neutral-400 text-xs mt-2">Nomor Sertifikat Analisis: <strong class="text-white" x-text="receipt.code"></strong></p>
+
+      <!-- Receipt summary box -->
+      <div class="bg-neutral-950 border border-neutral-800 rounded-2xl p-5 my-6 text-left space-y-3.5 text-xs font-light">
+        <div class="flex justify-between border-b border-neutral-900 pb-2 font-bold text-neutral-200">
+          <span>Klien Perusahaan</span>
+          <span class="text-blue-500" x-text="receipt.name"></span>
+        </div>
+        <div class="flex justify-between text-neutral-400">
+          <span>Skala Korporasi</span>
+          <span class="font-bold text-neutral-200" x-text="receipt.scaleLabel"></span>
+        </div>
+        <div class="flex justify-between text-neutral-400">
+          <span>Hambatan Utama</span>
+          <span class="font-bold text-neutral-200" x-text="receipt.bottleneckLabel"></span>
+        </div>
+        <div class="flex justify-between text-neutral-400 border-b border-neutral-900 pb-2">
+          <span>Estimasi Penghematan</span>
+          <span class="font-black text-blue-500" x-text="receipt.savings"></span>
+        </div>
+
+        <div class="pt-1.5">
+          <p class="font-bold text-[9px] uppercase text-blue-500 mb-1.5">Rekomendasi Awal Konsultan:</p>
+          <p class="text-[11px] leading-relaxed text-neutral-400 font-light" x-text="receipt.recommendation"></p>
+        </div>
+      </div>
+
+      <p class="text-[10px] text-neutral-500 mb-6 leading-relaxed">
+        Laporan diagnosis bisnis penuh (format PDF) beserta panduan roadmap solusi modular telah kami kirimkan ke email Anda.
+      </p>
+
+      <button @click="receiptOpen = false" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold uppercase tracking-widest py-3.5 text-xs rounded">Tutup & Selesai</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-neutral-950 py-12 text-center text-neutral-600 text-xs border-t border-neutral-800 mt-auto">
+    <p class="mb-2">&copy; 2026 Apex Consulting. Solusi korporasi berkelas dunia didukung platform premium DagangCommerce.</p>
+  </footer>
+
+  <script>
+    function apexState() {
+      return {
+        currentTab: 'home',
+        
+        // Notification
+        toast: { visible: false, title: '', message: '' },
+
+        // Assessment wizard states
+        quizStep: 1,
+        quizAnswers: {
+          scale: '250',
+          bottleneck: 'cost',
+          budget: 'mid'
+        },
+        leadForm: { name: '', email: '' },
+
+        // Receipt States
+        receiptOpen: false,
+        receipt: {},
+
+        services: [
+          { id: 1, name: 'Strategi Korporat & M&A', category: 'Strategy', desc: 'Perumusan visi jangka panjang bisnis, restrukturisasi modal korporat, merger & akuisisi bernilai taktis tinggi, serta ekspansi pangsa pasar global.', image: '' },
+          { id: 2, name: 'Transformasi Digital Terintegrasi', category: 'Technology', desc: 'Penerapan arsitektur cloud korporat terintegrasi, integrasi kecerdasan buatan (AI), otomasi proses operasional, serta analisis data besar.', image: '' },
+          { id: 3, name: 'Efisiensi Biaya & Keunggulan Operasional', category: 'Operations', desc: 'Penyederhanaan rantai pasok logistik kompleks, manajemen risiko komprehensif, implementasi efisiensi biaya, dan peningkatan produktivitas SDM.', image: '' }
+        ],
+
+        selectServiceForDiagnosis(service) {
+          this.currentTab = 'diagnose';
+          this.triggerToast("Layanan Dipilih", `${service.name} dipilih. Silakan isi diagnosis di sebelah kiri.`);
+        },
+
+        calculateEstimatedSavings() {
+          const emp = parseInt(this.quizAnswers.scale);
+          let base = 50000000; // Rp 50M
+          if (emp === 250) base = 150000000;
+          if (emp === 500) base = 450000000;
+
+          let multiplier = 1.0;
+          if (this.quizAnswers.bottleneck === 'cost') multiplier = 1.8;
+          if (this.quizAnswers.bottleneck === 'tech') multiplier = 1.4;
+
+          const total = base * multiplier;
+          return 'Rp ' + Number(total).toLocaleString('id-ID');
+        },
+
+        triggerToast(title, message) {
+          this.toast.title = title;
+          this.toast.message = message;
+          this.toast.visible = true;
+
+          setTimeout(() => {
+            this.toast.visible = false;
+          }, 3000);
+        },
+
+        submitDiagnosisForm() {
+          const certCode = 'APX-' + Math.floor(100000 + Math.random() * 900000);
+          
+          let scaleLabel = '1 - 50 Karyawan';
+          if (this.quizAnswers.scale === '250') scaleLabel = '51 - 250 Karyawan';
+          if (this.quizAnswers.scale === '500') scaleLabel = 'Lebih dari 250 Karyawan';
+
+          let bottleneckLabel = 'Sistem Teknologi';
+          let recommendation = 'Mengintegrasikan arsitektur data tunggal untuk memotong latensi komunikasi departemen.';
+          if (this.quizAnswers.bottleneck === 'cost') {
+            bottleneckLabel = 'Biaya Operasional';
+            recommendation = 'Mengotomasi alur logistik gudang modular untuk menurunkan biaya overhead penyimpanan barang hingga 35%.';
+          } else if (this.quizAnswers.bottleneck === 'revenue') {
+            bottleneckLabel = 'Stagnasi Penjualan';
+            recommendation = 'Memulai ekspansi kanal digital omnichannel terotomasi dengan analisis prediksi churn pelanggan.';
+          }
+
+          this.receipt = {
+            code: certCode,
+            name: this.leadForm.name,
+            scaleLabel: scaleLabel,
+            bottleneckLabel: bottleneckLabel,
+            savings: this.calculateEstimatedSavings(),
+            recommendation: recommendation
+          };
+
+          this.receiptOpen = true;
+
+          // Reset quiz step
+          this.quizStep = 1;
+          this.leadForm = { name: '', email: '' };
+        }
+      }
+    }
+  </script>
+</body>
+</html>

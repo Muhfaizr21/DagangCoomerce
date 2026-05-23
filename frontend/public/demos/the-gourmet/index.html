@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Gourmet - Luxury Dining Restaurant Template</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Alpine.js for interactive state -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            serif: ['Cormorant Garamond', 'serif'],
+          },
+          colors: {
+            gold: {
+              100: '#F7E7C4',
+              500: '#D4AF37', // Pure Gold
+              600: '#AA882C',
+            },
+            dining: '#0F0E0C'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    [x-cloak] { display: none !important; }
+  </style>
+</head>
+<body class="bg-dining text-stone-200 font-sans min-h-screen flex flex-col antialiased selection:bg-gold-500 selection:text-black"
+      x-data="gourmetState()">
+
+  <!-- 🔔 Global Notification Toast -->
+  <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 max-w-sm pointer-events-none">
+    <div x-show="toast.visible"
+         x-transition:enter="transition ease-out duration-300 transform"
+         x-transition:enter-start="translate-y-2 opacity-0 scale-95"
+         x-transition:enter-end="translate-y-0 opacity-100 scale-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="bg-stone-900 border border-gold-500/30 text-stone-100 rounded-lg px-4 py-3.5 shadow-2xl flex items-center gap-3 pointer-events-auto">
+      <span class="material-symbols-outlined text-gold-500">restaurant</span>
+      <div class="flex-grow text-xs text-left">
+        <p class="font-bold text-gold-100" x-text="toast.title"></p>
+        <p class="text-stone-400 mt-0.5" x-text="toast.message"></p>
+      </div>
+      <button @click="toast.visible = false" class="text-stone-400 hover:text-white">
+        <span class="material-symbols-outlined text-lg">close</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 🧭 Luxury Sticky Header -->
+  <header class="fixed top-0 left-0 w-full z-40 bg-dining/90 backdrop-blur-xl border-b border-stone-900">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+      <!-- Logo -->
+      <a href="#" @click.prevent="currentTab = 'home'" class="font-serif text-3xl font-bold tracking-widest text-gold-500 flex items-center gap-2">
+        THE GOURMET
+      </a>
+
+      <!-- Navigation links (dynamic click switching) -->
+      <nav class="hidden md:flex space-x-10 text-xs font-semibold tracking-[0.25em] uppercase text-stone-400">
+        <a href="#" @click.prevent="currentTab = 'home'" :class="currentTab === 'home' ? 'text-gold-500 border-b border-gold-500 pb-1' : 'hover:text-gold-500 transition-colors'">Beranda</a>
+        <a href="#" @click.prevent="currentTab = 'menu'" :class="currentTab === 'menu' ? 'text-gold-500 border-b border-gold-500 pb-1' : 'hover:text-gold-500 transition-colors'">Menu Mahakarya</a>
+        <a href="#" @click.prevent="currentTab = 'reserve'" :class="currentTab === 'reserve' ? 'text-gold-500 border-b border-gold-500 pb-1' : 'hover:text-gold-500 transition-colors'">Reservasi Meja</a>
+        <a href="#" @click.prevent="currentTab = 'story'" :class="currentTab === 'story' ? 'text-gold-500 border-b border-gold-500 pb-1' : 'hover:text-gold-500 transition-colors'">Kisah Kami</a>
+      </nav>
+
+      <!-- Action Button -->
+      <button @click="currentTab = 'reserve'" class="bg-gold-500 hover:bg-gold-600 text-black text-[10px] font-bold uppercase tracking-[0.2em] px-6 py-3 rounded transition-all hover:scale-105">
+        Pesan Meja
+      </button>
+    </div>
+  </header>
+
+  <!-- 🍽️ Screens Router -->
+  <main class="flex-grow pt-24">
+
+    <!-- Screen 1: Home Page -->
+    <template x-if="currentTab === 'home'">
+      <div>
+        <!-- Hero section -->
+        <section class="relative min-h-[90vh] flex items-center justify-center px-6 overflow-hidden">
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.06)_0%,transparent_70%)]"></div>
+          <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-black/60 z-10"></div>
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=1600&auto=format&fit=crop&q=80" alt="Delicious Steak gourmet" class="w-full h-full object-cover" />
+          </div>
+
+          <div class="relative max-w-4xl mx-auto text-center z-10 px-4">
+            <span class="text-gold-500 font-semibold tracking-[0.3em] uppercase text-xs block mb-4">Cita Rasa Seni Kuliner Sejati</span>
+            <h1 class="font-serif text-5xl md:text-8xl font-bold mb-8 leading-tight text-white italic">
+              Simfoni Kelezatan di Setiap Hidangan
+            </h1>
+            <p class="text-stone-300 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+              Nikmati petualangan rasa bersantap mewah kontemporer yang menggabungkan bahan-bahan organik segar terbaik lokal dengan teknik kuliner artisan modern kelas dunia.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <button @click="currentTab = 'menu'" class="bg-gold-500 hover:bg-gold-600 text-black px-8 py-4 font-bold text-xs uppercase tracking-widest transition-all hover:scale-105">Lihat Menu</button>
+              <button @click="currentTab = 'reserve'" class="border border-stone-700 hover:border-gold-500 hover:text-gold-500 text-white px-8 py-4 font-bold text-xs uppercase tracking-widest transition-all">Pesan Meja Sekarang</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Culinary stats highlight -->
+        <section class="py-20 bg-stone-950 border-b border-stone-900 text-center">
+          <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div>
+              <div class="font-serif text-4xl md:text-5xl font-bold text-gold-500 mb-2">3 Bintang</div>
+              <div class="text-stone-500 text-[10px] font-bold uppercase tracking-widest">Penghargaan Kuliner Michelin</div>
+            </div>
+            <div>
+              <div class="font-serif text-4xl md:text-5xl font-bold text-gold-500 mb-2">100%</div>
+              <div class="text-stone-500 text-[10px] font-bold uppercase tracking-widest">Bahan Organik Segar Lokal</div>
+            </div>
+            <div>
+              <div class="font-serif text-4xl md:text-5xl font-bold text-gold-500 mb-2">12 Meja</div>
+              <div class="text-stone-500 text-[10px] font-bold uppercase tracking-widest">Dining Room Privat Eksklusif</div>
+            </div>
+            <div>
+              <div class="font-serif text-4xl md:text-5xl font-bold text-gold-500 mb-2">5 Senior</div>
+              <div class="text-stone-500 text-[10px] font-bold uppercase tracking-widest">Executive Chef Bersertifikat</div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </template>
+
+    <!-- Screen 2: Master Menu Page with Filter Categories -->
+    <template x-if="currentTab === 'menu'">
+      <section class="py-20 px-6 bg-dining">
+        <div class="max-w-6xl mx-auto">
+          <div class="text-center max-w-xl mx-auto mb-16">
+            <span class="text-gold-500 font-bold tracking-[0.25em] text-xs uppercase">DINING EXPERIENCE</span>
+            <h2 class="font-serif text-4xl md:text-6xl font-bold italic mt-2">Mahakarya Menu Pilihan</h2>
+            <div class="w-12 h-0.5 bg-gold-500 mx-auto mt-4"></div>
+          </div>
+
+          <!-- Menu Category Filtering Tabs -->
+          <div class="flex justify-center gap-4 md:gap-8 mb-12 border-b border-stone-900 pb-4">
+            <template x-for="cat in ['Semua', 'Main Course', 'Appetizer', 'Dessert']">
+              <button @click="selectedMenuCategory = cat"
+                      :class="selectedMenuCategory === cat ? 'text-gold-500 font-bold border-b-2 border-gold-500 pb-2' : 'text-stone-400 hover:text-white'"
+                      class="text-xs md:text-sm uppercase tracking-widest transition-all focus:outline-none"
+                      x-text="cat"></button>
+            </template>
+          </div>
+
+          <!-- Dishes Grid with Add to pre-order triggers -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <template x-for="dish in getFilteredDishes()" :key="dish.id">
+              <div class="bg-stone-900/40 border border-stone-900 rounded-2xl overflow-hidden hover:border-gold-500/30 transition-all duration-300 group flex flex-col justify-between">
+                <div class="aspect-[4/3] bg-stone-900 relative overflow-hidden">
+                  <img :src="dish.image" :alt="dish.name" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div class="p-6 text-left flex-grow flex flex-col justify-between">
+                  <div>
+                    <div class="flex justify-between items-start mb-2">
+                      <h3 class="font-serif text-xl font-bold text-gold-100" x-text="dish.name"></h3>
+                      <span class="text-gold-500 font-bold text-sm" x-text="formatRupiah(dish.price)"></span>
+                    </div>
+                    <p class="text-stone-400 text-xs leading-relaxed font-light" x-text="dish.desc"></p>
+                  </div>
+
+                  <div class="flex justify-between items-center mt-6 pt-4 border-t border-stone-900/60">
+                    <span class="text-[10px] font-bold text-stone-500 uppercase tracking-wider" x-text="dish.category"></span>
+                    <button @click="addToPreorder(dish)" class="bg-transparent border border-gold-500/50 hover:bg-gold-500 hover:text-black text-gold-500 text-[9px] font-bold uppercase tracking-widest px-4 py-2 transition-all">Pre-Order</button>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- Screen 3: Interactive Table Reservation with 2D Map -->
+    <template x-if="currentTab === 'reserve'">
+      <section class="py-20 px-6 bg-dining">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          
+          <!-- Left: 2D Dining Table Map Selection -->
+          <div class="lg:col-span-7 bg-stone-950/80 border border-stone-900 rounded-3xl p-8 text-center">
+            <h3 class="font-serif text-2xl text-gold-100 mb-2">Tata Letak Ruang Dining</h3>
+            <p class="text-stone-400 text-xs mb-8">Pilih lokasi meja makan favorit Anda secara langsung di bawah ini.</p>
+            
+            <!-- Room Screen / Bar Indicator -->
+            <div class="w-full max-w-sm mx-auto bg-stone-900/40 text-[9px] font-bold tracking-[0.3em] uppercase py-2.5 border border-stone-800 text-stone-500 mb-10 rounded">
+              🍷 STAGE UTAMA RESTORAN / JENDELA KOTA
+            </div>
+
+            <!-- Meja 2D Map grid layout -->
+            <div class="grid grid-cols-3 gap-6 max-w-lg mx-auto">
+              <template x-for="table in tables" :key="table.id">
+                <button @click="selectReservedTable(table)"
+                        :disabled="table.reserved"
+                        :class="[
+                          table.reserved ? 'bg-red-950/40 border-red-800/40 text-red-700 cursor-not-allowed' : '',
+                          selectedTable?.id === table.id ? 'bg-gold-500 border-gold-600 text-black scale-105' : 'bg-stone-900 border-stone-800 text-stone-400 hover:border-gold-500/50'
+                        ]"
+                        class="aspect-square border rounded-2xl flex flex-col items-center justify-center p-4 transition-all focus:outline-none">
+                  <span class="material-symbols-outlined text-2xl mb-1">table_restaurant</span>
+                  <span class="text-xs font-bold" x-text="'Meja ' + table.id"></span>
+                  <span class="text-[9px] mt-1 font-semibold opacity-70" x-text="table.capacity + ' Kursi'"></span>
+                </button>
+              </template>
+            </div>
+
+            <div class="flex justify-center gap-6 mt-8 text-xs font-semibold text-stone-500">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded bg-stone-900 border border-stone-800"></span> Tersedia
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded bg-gold-500 border border-gold-600"></span> Pilihan Anda
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded bg-red-950/40 border border-red-800/40"></span> Tidak Tersedia
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Pre-order & Guest Info Submission -->
+          <div class="lg:col-span-5 bg-stone-950/80 border border-stone-900 rounded-3xl p-8 text-left">
+            <h3 class="font-serif text-2xl text-gold-100 mb-6 border-b border-stone-900 pb-3">Ringkasan Reservasi</h3>
+            
+            <form @submit.prevent="submitBooking()" class="space-y-6">
+              <!-- Guest Count and Schedule -->
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-2">Tanggal Kedatangan</label>
+                  <input required type="date" x-model="bookingForm.date" class="w-full bg-stone-900 border border-stone-800 focus:border-gold-500 focus:outline-none rounded px-3 py-2.5 text-xs text-stone-100" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-2">Pukul Kedatangan</label>
+                  <input required type="time" x-model="bookingForm.time" class="w-full bg-stone-900 border border-stone-800 focus:border-gold-500 focus:outline-none rounded px-3 py-2.5 text-xs text-stone-100" />
+                </div>
+              </div>
+
+              <!-- Input data -->
+              <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-2">Nama Pemesan</label>
+                <input required type="text" x-model="bookingForm.name" placeholder="Nama Anda" class="w-full bg-stone-900 border border-stone-800 focus:border-gold-500 focus:outline-none rounded px-3 py-2.5 text-xs text-stone-100" />
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-2">Email</label>
+                <input required type="email" x-model="bookingForm.email" placeholder="nama@email.com" class="w-full bg-stone-900 border border-stone-800 focus:border-gold-500 focus:outline-none rounded px-3 py-2.5 text-xs text-stone-100" />
+              </div>
+
+              <!-- Pre-ordered Dishes Summary list -->
+              <div class="bg-stone-900/40 border border-stone-900 rounded-xl p-4">
+                <h4 class="font-bold text-xs uppercase text-gold-500 tracking-wider mb-3">Pre-Order Hidangan</h4>
+                
+                <template x-if="preorders.length === 0">
+                  <p class="text-stone-500 text-xs leading-relaxed">Belum ada makanan yang ditambahkan. Silakan pilih di menu tab.</p>
+                </template>
+
+                <div class="divide-y divide-stone-900/60 max-h-48 overflow-y-auto pr-2 no-scrollbar">
+                  <template x-for="item in preorders" :key="item.id">
+                    <div class="py-2.5 flex justify-between items-center text-xs">
+                      <div>
+                        <p class="font-bold text-stone-200" x-text="item.name"></p>
+                        <div class="flex gap-2 text-[10px] text-stone-500 mt-0.5">
+                          <button @click.prevent="adjustPreorderQty(item, -1)" class="hover:text-white">-</button>
+                          <span x-text="item.qty + ' Porsi'"></span>
+                          <button @click.prevent="adjustPreorderQty(item, 1)" class="hover:text-white">+</button>
+                        </div>
+                      </div>
+                      <span class="font-semibold text-gold-100" x-text="formatRupiah(item.price * item.qty)"></span>
+                    </div>
+                  </template>
+                </div>
+              </div>
+
+              <!-- Final Summary totals -->
+              <div class="pt-4 border-t border-stone-900/60 space-y-2 text-xs">
+                <div class="flex justify-between">
+                  <span class="text-stone-500">Pilihan Meja</span>
+                  <span class="font-bold text-stone-200" x-text="selectedTable ? 'Meja ' + selectedTable.id : 'Belum dipilih'"></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-stone-500">Total Pre-Order Hidangan</span>
+                  <span class="font-bold text-stone-200" x-text="formatRupiah(getPreorderSubtotal())"></span>
+                </div>
+                <div class="flex justify-between pt-2 border-t border-stone-900 font-bold text-sm text-gold-500">
+                  <span>Total Estimasi Billing</span>
+                  <span x-text="formatRupiah(getPreorderSubtotal())"></span>
+                </div>
+              </div>
+
+              <button type="submit"
+                      :disabled="!selectedTable"
+                      :class="!selectedTable ? 'bg-stone-800 text-stone-500 cursor-not-allowed' : 'bg-gold-500 hover:bg-gold-600 text-black cursor-pointer'"
+                      class="w-full font-bold uppercase tracking-widest py-4 text-xs rounded transition-all">
+                Konfirmasi Reservasi & Pre-Order
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- Screen 4: Kisah Kami / Story -->
+    <template x-if="currentTab === 'story'">
+      <section class="py-24 px-6 bg-dining">
+        <div class="max-w-4xl mx-auto text-left">
+          <span class="text-gold-500 font-bold tracking-[0.25em] text-xs uppercase block mb-4">OUR LEGACY</span>
+          <h1 class="font-serif text-5xl md:text-7xl font-bold italic text-white leading-tight mb-10">Mendedikasikan Hidangan Terbaik Sejak 1989</h1>
+          <div class="aspect-video w-full rounded-3xl overflow-hidden bg-stone-900 mb-12 shadow-2xl">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=1200&auto=format&fit=crop&q=80" alt="Special Kitchen" class="w-full h-full object-cover" />
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-10 font-light text-stone-400 leading-relaxed">
+            <p>
+              Perjalanan kuliner *The Gourmet* berakar pada dedikasi mendalam untuk melestarikan tradisi bersantap klasik Prancis namun berani menggabungkannya dengan kekayaan rempah eksotis khas Nusantara. Setiap elemen hidangan dipersiapkan secara detail oleh tim kuliner kami yang dipimpin langsung oleh Executive Chef bintang 3 Michelin.
+            </p>
+            <p>
+              Kami hanya menggunakan sayuran organik musiman dari perkebunan organik mitra eksklusif kami di dataran tinggi Bedugul, Bali, serta daging sapi Wagyu A5 langsung dari peternakan Kagoshima Jepang. Kami mengundang Anda untuk tidak sekadar makan, melainkan menikmati seni tinggi di meja makan kami.
+            </p>
+          </div>
+        </div>
+      </section>
+    </template>
+
+  </main>
+
+  <!-- 🎟️ Elegant Table Booking Receipt Modal -->
+  <div class="fixed inset-0 z-50 flex items-center justify-center overflow-hidden p-6" x-show="receiptOpen" x-cloak>
+    <!-- Overlay backdrop -->
+    <div class="absolute inset-0 bg-black/85 transition-opacity duration-300" @click="receiptOpen = false"></div>
+
+    <div class="bg-stone-900 border border-gold-500/30 rounded-3xl shadow-2xl max-w-md w-full p-8 relative z-10 text-center"
+         x-show="receiptOpen"
+         x-transition:enter="ease-out duration-300 transform"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="ease-in duration-200 transform">
+      
+      <!-- Icon check -->
+      <div class="w-16 h-16 bg-gold-500/10 border border-gold-500/40 rounded-full flex items-center justify-center mx-auto mb-6 text-gold-500">
+        <span class="material-symbols-outlined text-3xl font-fill">check_circle</span>
+      </div>
+
+      <h2 class="font-serif text-3xl italic text-gold-100">Reservasi Terkonfirmasi!</h2>
+      <p class="text-stone-400 text-xs mt-2">Kode E-Receipt Anda: <strong class="text-white" x-text="bookingReceipt.code"></strong></p>
+
+      <!-- Receipt summary box -->
+      <div class="bg-stone-950 border border-stone-900 rounded-2xl p-5 my-6 text-left space-y-3.5 text-xs font-light">
+        <div class="flex justify-between border-b border-stone-900 pb-2 font-bold text-stone-200">
+          <span>Detail Pemesan</span>
+          <span class="text-gold-500" x-text="bookingReceipt.name"></span>
+        </div>
+        <div class="flex justify-between text-stone-400">
+          <span>Nomor Meja</span>
+          <span class="font-bold text-stone-200" x-text="'Meja ' + bookingReceipt.tableId"></span>
+        </div>
+        <div class="flex justify-between text-stone-400">
+          <span>Tanggal / Jam</span>
+          <span class="font-bold text-stone-200" x-text="bookingReceipt.date + ' / ' + bookingReceipt.time"></span>
+        </div>
+        
+        <!-- Preorder summary in receipt -->
+        <div class="border-t border-stone-900/60 pt-3">
+          <p class="font-bold text-[10px] uppercase text-stone-500 mb-2">Item Pre-Order:</p>
+          <template x-for="item in bookingReceipt.items" :key="item.id">
+            <div class="flex justify-between text-[11px] py-1 text-stone-300">
+              <span x-text="item.name + ' x' + item.qty"></span>
+              <span x-text="formatRupiah(item.price * item.qty)"></span>
+            </div>
+          </template>
+        </div>
+
+        <div class="flex justify-between pt-3 border-t border-stone-900 font-bold text-sm text-gold-500">
+          <span>Total Pre-Order Billing</span>
+          <span x-text="formatRupiah(bookingReceipt.totalBill)"></span>
+        </div>
+      </div>
+
+      <p class="text-[10px] text-stone-500 mb-6 leading-relaxed">
+        Silakan tunjukkan E-Receipt ini atau kode booking ke resepsionis restoran setibanya Anda di lokasi.
+      </p>
+
+      <button @click="receiptOpen = false" class="w-full bg-gold-500 hover:bg-gold-600 text-black font-bold uppercase tracking-widest py-3.5 text-xs">Tutup & Selesai</button>
+    </div>
+  </div>
+
+  <!-- 📦 Luxury Footer -->
+  <footer class="bg-stone-950 py-12 text-center text-stone-600 text-xs border-t border-stone-900/50 mt-auto">
+    <p class="mb-2">&copy; 2026 The Gourmet. Mahakarya kuliner berbintang Michelin didukung oleh DagangCommerce.</p>
+  </footer>
+
+  <script>
+    function gourmetState() {
+      return {
+        currentTab: 'home',
+        selectedMenuCategory: 'Semua',
+        
+        // Notification
+        toast: { visible: false, title: '', message: '' },
+
+        // Reservation Map State
+        selectedTable: null,
+        preorders: [],
+        bookingForm: {
+          name: '',
+          email: '',
+          date: '',
+          time: ''
+        },
+
+        // Receipt modal state
+        receiptOpen: false,
+        bookingReceipt: {},
+
+        tables: [
+          { id: 1, capacity: 2, reserved: false },
+          { id: 2, capacity: 4, reserved: true },
+          { id: 3, capacity: 2, reserved: false },
+          { id: 4, capacity: 6, reserved: false },
+          { id: 5, capacity: 4, reserved: false },
+          { id: 6, capacity: 2, reserved: true },
+          { id: 7, capacity: 4, reserved: false },
+          { id: 8, capacity: 2, reserved: false },
+          { id: 9, capacity: 8, reserved: false }
+        ],
+
+        dishes: [
+          { id: 1, name: 'A5 Wagyu Striploin', price: 385000, category: 'Main Course', desc: 'Daging sapi wagyu A5 Jepang panggang arang, disajikan dengan truffle jus dan parsnip puree murni.', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&auto=format&fit=crop&q=80' },
+          { id: 2, name: 'Artisan Smoked Salmon', price: 195000, category: 'Appetizer', desc: 'Salmon asap dingin khas Skotlandia, disajikan dengan kaviar sturgeon, krim asam herba, dan acar mentimun.', image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&auto=format&fit=crop&q=80' },
+          { id: 3, name: 'Deconstructed Chocolate Dome', price: 120000, category: 'Dessert', desc: 'Mousse cokelat hitam Madagaskar 72%, sorbet raspberry liar, mentega kakao renyah, dan emas 24k.', image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=600&auto=format&fit=crop&q=80' },
+          { id: 4, name: 'Foil-Baked Truffle Mushrooms', price: 145000, category: 'Appetizer', desc: 'Jamur truffle liar panggang timah aluminium dengan saus mentega herba gurih alami.', image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&auto=format&fit=crop&q=80' },
+          { id: 5, name: 'Premium Angus Fillet Mignon', price: 290000, category: 'Main Course', desc: 'Fillet sapi tenderloin angus panggang medium-rare disajikan dengan saus bearnaise.', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&auto=format&fit=crop&q=80' }
+        ],
+
+        getFilteredDishes() {
+          if (this.selectedMenuCategory === 'Semua') return this.dishes;
+          return this.dishes.filter(d => d.category === this.selectedMenuCategory);
+        },
+
+        formatRupiah(val) {
+          return 'Rp ' + Number(val).toLocaleString('id-ID');
+        },
+
+        // Pre-order system
+        addToPreorder(dish) {
+          const existing = this.preorders.find(p => p.id === dish.id);
+          if (existing) {
+            existing.qty++;
+          } else {
+            this.preorders.push({ ...dish, qty: 1 });
+          }
+
+          this.triggerToast("Hidangan Ditambahkan", `${dish.name} dimasukkan ke pre-order reservasi.`);
+        },
+
+        adjustPreorderQty(item, step) {
+          const found = this.preorders.find(p => p.id === item.id);
+          if (found) {
+            found.qty += step;
+            if (found.qty <= 0) {
+              this.preorders = this.preorders.filter(p => p.id !== item.id);
+            }
+          }
+        },
+
+        getPreorderSubtotal() {
+          return this.preorders.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        },
+
+        selectReservedTable(table) {
+          this.selectedTable = table;
+          this.triggerToast("Meja Dipilih", `Anda memilih Meja ${table.id} (${table.capacity} Kursi) di ruang utama.`);
+        },
+
+        triggerToast(title, message) {
+          this.toast.title = title;
+          this.toast.message = message;
+          this.toast.visible = true;
+
+          setTimeout(() => {
+            this.toast.visible = false;
+          }, 3000);
+        },
+
+        submitBooking() {
+          if (!this.selectedTable) return;
+          
+          const bookingCode = 'GM-' + Math.floor(100000 + Math.random() * 900000);
+          this.bookingReceipt = {
+            code: bookingCode,
+            name: this.bookingForm.name,
+            tableId: this.selectedTable.id,
+            date: this.bookingForm.date,
+            time: this.bookingForm.time,
+            items: [...this.preorders],
+            totalBill: this.getPreorderSubtotal()
+          };
+
+          // Mark table as reserved temporarily
+          const tbl = this.tables.find(t => t.id === this.selectedTable.id);
+          if (tbl) tbl.reserved = true;
+
+          // Open receipt
+          this.receiptOpen = true;
+
+          // Reset fields
+          this.preorders = [];
+          this.selectedTable = null;
+          this.bookingForm = { name: '', email: '', date: '', time: '' };
+        }
+      }
+    }
+  </script>
+</body>
+</html>

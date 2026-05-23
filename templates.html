@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Templates - DagangMaker</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#f2f4f6",
+                        "tertiary-container": "#d0d1d1",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2d3133",
+                        "on-primary-fixed": "#231b00",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-secondary-fixed-variant": "#3c475a",
+                        "outline": "#7f7660",
+                        "surface-tint": "#735c00",
+                        "on-secondary-fixed": "#111c2d",
+                        "surface": "#f7f9fb",
+                        "surface-container": "#eceef0",
+                        "primary-fixed-dim": "#eec200",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-primary-fixed-variant": "#574500",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#58595a",
+                        "on-secondary-container": "#586377",
+                        "on-background": "#191c1e",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-primary-container": "#6c5700",
+                        "on-surface": "#191c1e",
+                        "outline-variant": "#d1c6ab",
+                        "tertiary-fixed": "#e2e2e2",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#d8e3fb",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#e0e3e5",
+                        "primary": "#735c00",
+                        "surface-bright": "#f7f9fb",
+                        "secondary-container": "#d5e0f8",
+                        "primary-fixed": "#ffe083",
+                        "surface-container-high": "#e6e8ea",
+                        "background": "#f7f9fb",
+                        "primary-container": "#facc15",
+                        "tertiary": "#5d5f5f",
+                        "surface-dim": "#d8dadc",
+                        "inverse-primary": "#eec200",
+                        "secondary": "#545f73",
+                        "surface-variant": "#e0e3e5",
+                        "on-surface-variant": "#4d4632",
+                        "secondary-fixed-dim": "#bcc7de"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap": "4rem",
+                        "gutter": "1.5rem",
+                        "container-padding-mobile": "1.25rem",
+                        "container-padding-desktop": "2.5rem",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.4", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* Hide scrollbar for clean filter horizontal scroll */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background antialiased min-h-screen flex flex-col">
+    <!-- TopNavBar -->
+    <header class="bg-surface-container-lowest shadow-sm sticky top-0 z-50 w-full transition-all duration-200">
+        <div
+            class="flex justify-between items-center w-full px-container-padding-mobile md:px-container-padding-desktop max-w-7xl mx-auto h-20">
+            <!-- Brand -->
+            <a class="font-headline-md text-headline-md font-extrabold text-primary flex items-center gap-2 transition-all duration-200 active:scale-95"
+                href="#">
+                <span class="material-symbols-outlined icon-fill text-[28px] text-primary-container">storefront</span>
+                DagangMaker
+            </a>
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center gap-8">
+                <a class="font-label-md text-label-md text-secondary hover:text-primary transition-colors"
+                    href="#">Features</a>
+                <a class="font-label-md text-label-md text-primary font-bold border-b-2 border-primary pb-1 hover:text-primary transition-colors"
+                    href="#">Templates</a>
+                <a class="font-label-md text-label-md text-secondary hover:text-primary transition-colors"
+                    href="#">Pricing</a>
+            </nav>
+            <!-- Actions -->
+            <div class="flex items-center gap-4">
+                <a class="hidden md:block font-label-md text-label-md text-secondary hover:text-primary transition-colors"
+                    href="#">Login</a>
+                <a class="font-label-md text-label-md bg-primary-container text-on-primary-container px-6 py-2.5 rounded-full hover:shadow-md transition-all duration-200 active:scale-95 flex items-center justify-center"
+                    href="#">
+                    Get Started
+                </a>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content -->
+    <main
+        class="flex-grow flex flex-col w-full max-w-7xl mx-auto px-container-padding-mobile md:px-container-padding-desktop py-section-gap">
+        <!-- Hero Section -->
+        <section class="text-center max-w-3xl mx-auto mb-12">
+            <h1
+                class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4 tracking-tight text-balance">
+                Pilih Desain yang Sesuai dengan Bisnis Anda
+            </h1>
+            <p class="font-body-lg text-body-lg text-secondary">
+                Mulai lebih cepat dengan template profesional yang dirancang khusus untuk meningkatkan penjualan dan
+                membangun kredibilitas merek Anda.
+            </p>
+        </section>
+        <!-- Filter Section -->
+        <section class="mb-12">
+            <div class="flex overflow-x-auto no-scrollbar gap-3 md:justify-center pb-2">
+                <button
+                    class="flex-shrink-0 px-5 py-2.5 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md transition-all">All
+                    Templates</button>
+                <button
+                    class="flex-shrink-0 px-5 py-2.5 rounded-full bg-surface-container-lowest border border-outline-variant text-secondary hover:border-primary hover:text-primary font-label-md text-label-md transition-all">Restaurant</button>
+                <button
+                    class="flex-shrink-0 px-5 py-2.5 rounded-full bg-surface-container-lowest border border-outline-variant text-secondary hover:border-primary hover:text-primary font-label-md text-label-md transition-all">Salon</button>
+                <button
+                    class="flex-shrink-0 px-5 py-2.5 rounded-full bg-surface-container-lowest border border-outline-variant text-secondary hover:border-primary hover:text-primary font-label-md text-label-md transition-all">Online
+                    Store</button>
+                <button
+                    class="flex-shrink-0 px-5 py-2.5 rounded-full bg-surface-container-lowest border border-outline-variant text-secondary hover:border-primary hover:text-primary font-label-md text-label-md transition-all">Professional
+                    Services</button>
+            </div>
+        </section>
+        <!-- Templates Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+            <!-- Card 1 -->
+            <div
+                class="group bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-surface-variant overflow-hidden flex flex-col hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300">
+                <div class="w-full aspect-[4/3] bg-surface-container relative overflow-hidden">
+                    <img alt="Template Preview"
+                        class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                        data-alt="A clean, modern website template design for a high-end restaurant, displayed on a sleek white background. The layout features high-quality culinary photography showing a modern dining space, elegant typography, and subtle yellow accent elements. The aesthetic is corporate minimalist, light, bright, and professional, conveying a sense of premium dining."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSMgjrkP4eKqm_4BrODeI-GJcY7kZ6xB1iPfO80bWXvtz9DMTsRu6pxObWiNqOCFW0CytpDtkDodH4zMXnRhbyzT_e51s21EbxYIrzzXEHKQn1GZXnwUQ4r1wPqZLbLYi2JMbjGjOvgeiX25rFjdMsapV1nkO41cTUT-SWuEpcS9Z2OWSnondYF5u6ZbFAL1BJxh7z_rCi85xF_dzpT2j44gBKZCALryl_6TgLundif7xrXX6hE8TYfOY5KwSFIev52-xRqsAbLb_0" />
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <div class="mb-4">
+                        <span
+                            class="inline-block px-2.5 py-1 rounded-md bg-surface text-secondary font-label-sm text-label-sm uppercase tracking-wider mb-2">Restaurant</span>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface">The Gourmet</h3>
+                    </div>
+                    <div class="mt-auto flex gap-3 pt-4 border-t border-surface-variant">
+                        <button
+                            class="flex-1 py-2.5 rounded-lg border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface transition-colors flex justify-center items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">visibility</span>
+                            Preview
+                        </button>
+                        <button
+                            class="flex-1 py-2.5 rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md hover:brightness-95 transition-all active:scale-95">
+                            Pilih
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div
+                class="group bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-surface-variant overflow-hidden flex flex-col hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300">
+                <div class="w-full aspect-[4/3] bg-surface-container relative overflow-hidden">
+                    <img alt="Template Preview"
+                        class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                        data-alt="A sophisticated website template layout for a beauty salon, presented on a pristine white surface. The design includes soft, inviting imagery of spa treatments and natural light, clean sans-serif text, and distinct yellow call-to-action buttons. The overall mood is calm, modern, and aligned with a minimalist corporate identity in light mode."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDui5xDLBlLgvzs_EhjB4krNrP2xVR5KmAzlQwsok8P6PMJlbUE1kyq3osPy8JK6R9c9JUBAX56I5dKdF3REnylCNrPLOCC5U1pnS3SYM3LcZWJf11dBu2MOgkmkBllIZxCs1ke9I7rfZAabD2TOS3T5fduly3erG6gUxwIpJ83J9cHZaR10EP52InUKzLKSR8cinVrCACYpnu-VJLgSttDgiaw83f0pzVv55jw6MnukH2z6sawFByg-4G6PkZcxy1F1NLelUPBib3d" />
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <div class="mb-4">
+                        <span
+                            class="inline-block px-2.5 py-1 rounded-md bg-surface text-secondary font-label-sm text-label-sm uppercase tracking-wider mb-2">Salon</span>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface">Style &amp; Glow</h3>
+                    </div>
+                    <div class="mt-auto flex gap-3 pt-4 border-t border-surface-variant">
+                        <button
+                            class="flex-1 py-2.5 rounded-lg border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface transition-colors flex justify-center items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">visibility</span>
+                            Preview
+                        </button>
+                        <button
+                            class="flex-1 py-2.5 rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md hover:brightness-95 transition-all active:scale-95">
+                            Pilih
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div
+                class="group bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-surface-variant overflow-hidden flex flex-col hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300">
+                <div class="w-full aspect-[4/3] bg-surface-container relative overflow-hidden">
+                    <img alt="Template Preview"
+                        class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                        data-alt="A minimalist online store website template preview, showcasing neatly arranged apparel product grids on a bright white background. The interface is highly structured with ample active white space, sharp modern typography, and energetic yellow highlights for sale tags and buttons. The visual style is crisp, commercial, and highly professional."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSuI_F2BMoRWzDjldV_PeYz8bZXBFDStgtK2kKDwj3A_Jgsunus_v-I_oOe0hV7l6muiHca97kJ1BThdCRFFVOqjU0IwCRCzg6SNnGrWB5x3BTxDPSyeWRTOr_frrH_nbePI0JiUyILqjmOhzp_-Sawa9EXyj5wEUbWRhfxrZuk-KvMqcnpkdBSVnxOyZRC67DHOaVjwvBadHYOOjUi1rGPAsp1B5Q8X-vKS6ABXINzZDf87J3ifFvVQ1eW-pVnmpryKtdZVosawir" />
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <div class="mb-4">
+                        <span
+                            class="inline-block px-2.5 py-1 rounded-md bg-surface text-secondary font-label-sm text-label-sm uppercase tracking-wider mb-2">Online
+                            Store</span>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface">Urbane Apparel</h3>
+                    </div>
+                    <div class="mt-auto flex gap-3 pt-4 border-t border-surface-variant">
+                        <button
+                            class="flex-1 py-2.5 rounded-lg border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface transition-colors flex justify-center items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">visibility</span>
+                            Preview
+                        </button>
+                        <button
+                            class="flex-1 py-2.5 rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md hover:brightness-95 transition-all active:scale-95">
+                            Pilih
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 4 -->
+            <div
+                class="group bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-surface-variant overflow-hidden flex flex-col hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300">
+                <div class="w-full aspect-[4/3] bg-surface-container relative overflow-hidden">
+                    <img alt="Template Preview"
+                        class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                        data-alt="A professional services website template preview showing a bright, modern corporate office environment. The layout emphasizes clean geometric sections, vast white space, and stark black text, accented by subtle yellow progress bars and functional buttons. The mood is confident, efficient, and aligns perfectly with a corporate minimalist design language."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAocVhCFAgGuhC7Z3AkvoZEBzFBM_1dY3B8IFfU0-99wvikJrxurteKUOcxJaCK-ulhF4JJLFx3vtdRGndSzr7E4lvJx3oASOq5OWV9TTT7uJLPY9qyaYdHiBsPI7o8CqzpjTKGVMkyWRQ_lweb-H95RAVqsxlemPOOYT1M8jGgTeZNpTT0bKJK6mKMw2H2Nm8ldQhqH_VxKFBv4s-FNB3egSHHowj4GA9MPZ0LYJ9HGXn2r98cT2wWFf7YPG5xvP1LdMZlajOYxFZ" />
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <div class="mb-4">
+                        <span
+                            class="inline-block px-2.5 py-1 rounded-md bg-surface text-secondary font-label-sm text-label-sm uppercase tracking-wider mb-2">Professional
+                            Services</span>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface">Apex Consulting</h3>
+                    </div>
+                    <div class="mt-auto flex gap-3 pt-4 border-t border-surface-variant">
+                        <button
+                            class="flex-1 py-2.5 rounded-lg border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface transition-colors flex justify-center items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">visibility</span>
+                            Preview
+                        </button>
+                        <button
+                            class="flex-1 py-2.5 rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md hover:brightness-95 transition-all active:scale-95">
+                            Pilih
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 5 -->
+            <div
+                class="group bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-surface-variant overflow-hidden flex flex-col hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300">
+                <div class="w-full aspect-[4/3] bg-surface-container relative overflow-hidden">
+                    <img alt="Template Preview"
+                        class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                        data-alt="A vibrant yet structured website template for a modern cafe or bistro, presented in a light-mode UI context. The layout incorporates rich photography of coffee and pastries set against pure white card surfaces. Primary yellow accents highlight menu categories and the 'Order Now' actions, blending high-energy vibrance with clean layout principles."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBowpkrCuUzAvaKvADk0FKB6KkjIk0x_JvjKxqHiFWAeLdPRG0jY_RJrYoL89QMPD_pD-X1bc0kK7GEKBGV77ycSnmVT7qkZfurU9bYeGUElLQW7QmOIeoXEoc3hFnPGgoxikGi5RADZqDqkRBORkUB8RvbybSq4lKUBMLXItDnF66uoR09zDYOdK8gUPEwR-0YZ8o_JPK1jDQJ1MgQBdXozagYfK0pTSquDFghYwqLr-BJR9tBG2sZiuNdon5oW1jeZhWeHoxk_Rp" />
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <div class="mb-4">
+                        <span
+                            class="inline-block px-2.5 py-1 rounded-md bg-surface text-secondary font-label-sm text-label-sm uppercase tracking-wider mb-2">Restaurant</span>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface">Bistro Brew</h3>
+                    </div>
+                    <div class="mt-auto flex gap-3 pt-4 border-t border-surface-variant">
+                        <button
+                            class="flex-1 py-2.5 rounded-lg border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface transition-colors flex justify-center items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">visibility</span>
+                            Preview
+                        </button>
+                        <button
+                            class="flex-1 py-2.5 rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md hover:brightness-95 transition-all active:scale-95">
+                            Pilih
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 6 -->
+            <div
+                class="group bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-surface-variant overflow-hidden flex flex-col hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300">
+                <div
+                    class="w-full aspect-[4/3] bg-surface-container relative overflow-hidden flex items-center justify-center bg-gradient-to-br from-surface-variant to-surface-container-high">
+                    <!-- Example of a more abstract/graphic template preview -->
+                    <div
+                        class="w-3/4 h-3/4 bg-surface-container-lowest rounded-lg shadow-sm flex flex-col p-4 opacity-90 group-hover:scale-105 transition-transform duration-500">
+                        <div class="w-full h-8 bg-primary-container rounded mb-3"></div>
+                        <div class="w-2/3 h-4 bg-surface-variant rounded mb-2"></div>
+                        <div class="w-1/2 h-4 bg-surface-variant rounded mb-6"></div>
+                        <div class="grid grid-cols-2 gap-2 mt-auto">
+                            <div class="h-16 bg-surface-container rounded"></div>
+                            <div class="h-16 bg-surface-container rounded"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <div class="mb-4">
+                        <span
+                            class="inline-block px-2.5 py-1 rounded-md bg-surface text-secondary font-label-sm text-label-sm uppercase tracking-wider mb-2">Online
+                            Store</span>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface">Tech Gadgets</h3>
+                    </div>
+                    <div class="mt-auto flex gap-3 pt-4 border-t border-surface-variant">
+                        <button
+                            class="flex-1 py-2.5 rounded-lg border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface transition-colors flex justify-center items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">visibility</span>
+                            Preview
+                        </button>
+                        <button
+                            class="flex-1 py-2.5 rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md hover:brightness-95 transition-all active:scale-95">
+                            Pilih
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer
+        class="bg-surface-container-low w-full py-section-gap px-container-padding-mobile md:px-container-padding-desktop flex flex-col md:flex-row justify-between items-start gap-gutter mt-auto">
+        <div class="flex flex-col gap-4">
+            <span class="font-headline-sm text-headline-sm font-bold text-primary">DagangMaker</span>
+            <span class="font-body-md text-body-md text-secondary">© 2024 DagangMaker. All rights reserved.</span>
+        </div>
+        <nav class="flex flex-wrap gap-x-8 gap-y-4 md:justify-end">
+            <a class="font-body-md text-body-md text-secondary hover:text-primary hover:underline transition-opacity duration-200 hover:opacity-80"
+                href="#">About Us</a>
+            <a class="font-body-md text-body-md text-secondary hover:text-primary hover:underline transition-opacity duration-200 hover:opacity-80"
+                href="#">Careers</a>
+            <a class="font-body-md text-body-md text-secondary hover:text-primary hover:underline transition-opacity duration-200 hover:opacity-80"
+                href="#">Privacy Policy</a>
+            <a class="font-body-md text-body-md text-secondary hover:text-primary hover:underline transition-opacity duration-200 hover:opacity-80"
+                href="#">Terms of Service</a>
+            <a class="font-body-md text-body-md text-secondary hover:text-primary hover:underline transition-opacity duration-200 hover:opacity-80"
+                href="#">Contact</a>
+            <a class="font-body-md text-body-md text-secondary hover:text-primary hover:underline transition-opacity duration-200 hover:opacity-80"
+                href="#">Help Center</a>
+        </nav>
+    </footer>
+</body>
+
+</html>

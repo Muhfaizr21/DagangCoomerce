@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Style & Glow - Premium Hair & Beauty Salon Template</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          },
+          colors: {
+            salon: {
+              gold: '#C5A880',
+              rose: '#F8EBE6',
+              charcoal: '#2D2722',
+              cream: '#FAF7F2'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    [x-cloak] { display: none !important; }
+  </style>
+</head>
+<body class="bg-[#FAF7F2] text-[#3D352E] font-sans min-h-screen flex flex-col antialiased selection:bg-salon-gold selection:text-white"
+      x-data="salonState()">
+
+  <!-- 🔔 Global Notification Toast -->
+  <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 max-w-sm pointer-events-none">
+    <div x-show="toast.visible"
+         x-transition:enter="transition ease-out duration-300 transform"
+         x-transition:enter-start="translate-y-2 opacity-0 scale-95"
+         x-transition:enter-end="translate-y-0 opacity-100 scale-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="bg-[#2D2722] text-[#FAF7F2] rounded-lg px-4 py-3.5 shadow-2xl flex items-center gap-3 pointer-events-auto border border-salon-gold/30">
+      <span class="material-symbols-outlined text-salon-gold">content_cut</span>
+      <div class="flex-grow text-xs text-left">
+        <p class="font-bold text-white" x-text="toast.title"></p>
+        <p class="text-neutral-400 mt-0.5" x-text="toast.message"></p>
+      </div>
+      <button @click="toast.visible = false" class="text-neutral-400 hover:text-white">
+        <span class="material-symbols-outlined text-lg">close</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 🧭 Sticky Glassmorphic Header -->
+  <header class="fixed top-0 left-0 w-full z-40 bg-[#FAF7F2]/80 backdrop-blur-xl border-b border-[#E8DFD0]">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+      <!-- Logo -->
+      <a href="#" @click.prevent="currentTab = 'home'" class="font-serif text-2xl font-bold tracking-wider text-salon-charcoal">
+        STYLE & GLOW<span class="text-salon-gold">.</span>
+      </a>
+
+      <!-- Navigation links (tabs clickable switching) -->
+      <nav class="hidden md:flex space-x-10 text-xs font-bold uppercase tracking-[0.2em] text-[#63554A]">
+        <a href="#" @click.prevent="currentTab = 'home'" :class="currentTab === 'home' ? 'text-salon-gold border-b border-salon-gold pb-1' : 'hover:text-salon-gold transition-colors'">Beranda</a>
+        <a href="#" @click.prevent="currentTab = 'services'" :class="currentTab === 'services' ? 'text-salon-gold border-b border-salon-gold pb-1' : 'hover:text-salon-gold transition-colors'">Layanan Kecantikan</a>
+        <a href="#" @click.prevent="currentTab = 'book'" :class="currentTab === 'book' ? 'text-salon-gold border-b border-salon-gold pb-1' : 'hover:text-salon-gold transition-colors'">Janji Temu</a>
+      </nav>
+
+      <!-- Action Booking button -->
+      <button @click="currentTab = 'book'" class="bg-salon-gold hover:bg-[#B3936A] text-white text-[10px] font-bold uppercase tracking-[0.2em] px-6 py-3 rounded-full transition-all hover:scale-105">
+        Pesan Sesi
+      </button>
+    </div>
+  </header>
+
+  <!-- 🧖‍♀️ Router screens -->
+  <main class="flex-grow pt-24">
+
+    <!-- Screen 1: Home Page -->
+    <template x-if="currentTab === 'home'">
+      <div>
+        <!-- Hero section -->
+        <section class="relative min-h-[85vh] flex items-center justify-center px-6 overflow-hidden bg-gradient-to-b from-salon-cream to-white">
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(197,168,128,0.06)_0%,transparent_70%)]"></div>
+          <div class="relative max-w-4xl mx-auto text-center z-10 px-4">
+            <span class="text-salon-gold font-bold tracking-[0.3em] uppercase text-xs block mb-4">EKSKLUSIVITAS & RELAKSASI</span>
+            <h1 class="font-serif text-5xl md:text-8xl font-medium mb-8 leading-tight text-[#2B231D]">
+              Pancarkan Kecantikan Sejati Anda
+            </h1>
+            <p class="text-[#63554A] text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+              Layanan spa & salon premium yang memadukan keahlian stylist bersertifikat internasional dengan produk organik mewah terbaik untuk kenyamanan Anda.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <button @click="currentTab = 'services'" class="bg-salon-gold hover:bg-[#B3936A] text-white px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest transition-all hover:scale-105 shadow-md">Daftar Layanan</button>
+              <button @click="currentTab = 'book'" class="border border-[#DBCAB4] hover:border-salon-gold hover:text-salon-gold text-salon-charcoal px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest transition-all">Pesan Jadwal Sesi</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Gallery highlight -->
+        <section class="py-20 bg-white border-y border-[#E8DFD0] text-center">
+          <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div>
+              <div class="font-serif text-4xl font-bold text-salon-charcoal mb-2">99%</div>
+              <div class="text-[#877464] text-[10px] font-bold uppercase tracking-widest">Tingkat Kepuasan Pelanggan</div>
+            </div>
+            <div>
+              <div class="font-serif text-4xl font-bold text-salon-charcoal mb-2">12,000+</div>
+              <div class="text-[#877464] text-[10px] font-bold uppercase tracking-widest">Sesi Selesai Dikerjakan</div>
+            </div>
+            <div>
+              <div class="font-serif text-4xl font-bold text-salon-charcoal mb-2">10 Senior</div>
+              <div class="text-[#877464] text-[10px] font-bold uppercase tracking-widest">Stylist & Therapist Ahli</div>
+            </div>
+            <div>
+              <div class="font-serif text-4xl font-bold text-salon-charcoal mb-2">GOTS</div>
+              <div class="text-[#877464] text-[10px] font-bold uppercase tracking-widest">Produk Organik Alami Bersertifikat</div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </template>
+
+    <!-- Screen 2: Services Catalog -->
+    <template x-if="currentTab === 'services'">
+      <section class="py-20 px-6 bg-white">
+        <div class="max-w-6xl mx-auto">
+          <div class="text-center max-w-xl mx-auto mb-16">
+            <span class="text-salon-gold font-bold tracking-[0.25em] text-xs uppercase">ELEGANT SERVICES</span>
+            <h2 class="font-serif text-4xl md:text-6xl font-medium mt-2">Daftar Layanan Eksklusif</h2>
+            <div class="w-12 h-0.5 bg-salon-gold mx-auto mt-4"></div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <template x-for="item in services" :key="item.id">
+              <div class="bg-salon-cream border border-[#E8DFD0] rounded-3xl overflow-hidden hover:border-salon-gold/50 transition-all duration-300 group flex flex-col justify-between">
+                <div class="aspect-[4/3] bg-neutral-100 relative overflow-hidden">
+                  <img :src="item.image" :alt="item.name" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div class="p-6 text-left flex-grow flex flex-col justify-between">
+                  <div>
+                    <div class="flex justify-between items-start mb-2">
+                      <h3 class="font-serif text-xl font-bold text-[#2B231D]" x-text="item.name"></h3>
+                      <span class="text-salon-gold font-bold text-sm" x-text="formatRupiah(item.price)"></span>
+                    </div>
+                    <p class="text-[#63554A] text-xs leading-relaxed font-light" x-text="item.desc"></p>
+                  </div>
+                  
+                  <div class="flex justify-between items-center mt-6 pt-4 border-t border-[#E8DFD0]">
+                    <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider" x-text="item.category"></span>
+                    <button @click="selectServiceForBooking(item)" class="bg-[#2D2722] hover:bg-salon-gold text-white text-[9px] font-bold uppercase tracking-widest px-4 py-2 transition-colors rounded-full">Pilih Sesi</button>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- Screen 3: Interactive Appointment Scheduler -->
+    <template x-if="currentTab === 'book'">
+      <section class="py-20 px-6 bg-salon-cream">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          
+          <!-- Left: Stylists & Time slots selections -->
+          <div class="lg:col-span-7 bg-white border border-[#E8DFD0] rounded-3xl p-8 text-left space-y-8 shadow-md">
+            
+            <!-- 1. Select service info -->
+            <div>
+              <h3 class="font-serif text-xl text-salon-charcoal mb-4">1. Layanan yang Dipilih</h3>
+              <template x-if="!selectedService">
+                <div class="p-4 bg-salon-rose/30 border border-dashed border-salon-gold/50 rounded-xl text-center">
+                  <p class="text-xs text-[#877464]">Belum ada layanan yang dipilih. <button @click="currentTab = 'services'" class="text-salon-gold font-bold underline">Lihat Layanan</button></p>
+                </div>
+              </template>
+              <template x-if="selectedService">
+                <div class="p-4 bg-[#FAF7F2] border border-[#E8DFD0] rounded-xl flex justify-between items-center">
+                  <div>
+                    <h4 class="font-bold text-sm" x-text="selectedService.name"></h4>
+                    <p class="text-[10px] text-neutral-400 uppercase font-semibold" x-text="selectedService.category"></p>
+                  </div>
+                  <span class="font-bold text-salon-gold text-sm" x-text="formatRupiah(selectedService.price)"></span>
+                </div>
+              </template>
+            </div>
+
+            <!-- 2. Choose Senior Stylist -->
+            <div>
+              <h3 class="font-serif text-xl text-salon-charcoal mb-4">2. Pilih Terapis / Stylist Senior</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <template x-for="stylist in stylists" :key="stylist.name">
+                  <button @click="selectedStylist = stylist"
+                          :class="selectedStylist?.name === stylist.name ? 'ring-2 ring-salon-gold border-transparent bg-salon-rose/20' : 'border-[#E8DFD0] bg-white hover:border-salon-gold/50'"
+                          class="border p-4 rounded-2xl flex flex-col items-center text-center transition-all focus:outline-none">
+                    <img :src="stylist.image" :alt="stylist.name" class="w-12 h-12 rounded-full object-cover mb-2" />
+                    <span class="text-xs font-bold text-salon-charcoal" x-text="stylist.name"></span>
+                    <span class="text-[9px] text-salon-gold font-bold mt-1" x-text="'★ ' + stylist.rating"></span>
+                  </button>
+                </template>
+              </div>
+            </div>
+
+            <!-- 3. Time Slots -->
+            <div>
+              <h3 class="font-serif text-xl text-salon-charcoal mb-4">3. Pilih Jam Janji Temu</h3>
+              <div class="grid grid-cols-4 gap-3">
+                <template x-for="slot in timeSlots" :key="slot">
+                  <button @click="selectedTimeSlot = slot"
+                          :class="selectedTimeSlot === slot ? 'bg-[#2D2722] text-white border-transparent' : 'border-[#E8DFD0] bg-white hover:border-[#2D2722]'"
+                          class="border py-2.5 rounded-lg text-xs font-semibold text-center transition-all focus:outline-none"
+                          x-text="slot"></button>
+                </template>
+              </div>
+            </div>
+
+            <!-- 4. Premium Addons toggles -->
+            <div>
+              <h3 class="font-serif text-xl text-salon-charcoal mb-4">4. Perawatan Tambahan (Optional Add-ons)</h3>
+              <div class="space-y-3">
+                <template x-for="addon in addons" :key="addon.id">
+                  <label class="flex justify-between items-center p-3 bg-salon-cream/50 border border-[#E8DFD0]/60 rounded-xl cursor-pointer hover:bg-salon-rose/10 transition-colors">
+                    <div class="flex items-center gap-3">
+                      <input type="checkbox"
+                             :value="addon.id"
+                             x-model="selectedAddons"
+                             class="rounded accent-salon-gold w-4 h-4" />
+                      <div>
+                        <span class="text-xs font-bold text-salon-charcoal" x-text="addon.name"></span>
+                        <p class="text-[10px] text-neutral-400" x-text="addon.desc"></p>
+                      </div>
+                    </div>
+                    <span class="text-xs font-bold text-salon-gold" x-text="'+ ' + formatRupiah(addon.price)"></span>
+                  </label>
+                </template>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right: Summary checkout card -->
+          <div class="lg:col-span-5 bg-white border border-[#E8DFD0] rounded-3xl p-8 shadow-md text-left">
+            <h3 class="font-serif text-2xl text-salon-charcoal mb-6 border-b border-[#E8DFD0] pb-3">Ringkasan Janji Sesi</h3>
+            
+            <form @submit.prevent="submitBooking()" class="space-y-6">
+              <!-- Guest Details -->
+              <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-[#877464] mb-2 font-semibold">Tanggal Janji Temu</label>
+                <input required type="date" x-model="bookingForm.date" class="w-full bg-[#FAF7F2] border border-[#E8DFD0] focus:border-salon-gold focus:outline-none rounded px-3 py-2.5 text-xs text-salon-charcoal" />
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-[#877464] mb-2 font-semibold">Nama Lengkap</label>
+                <input required type="text" x-model="bookingForm.name" placeholder="Nama Anda" class="w-full bg-[#FAF7F2] border border-[#E8DFD0] focus:border-salon-gold focus:outline-none rounded px-3 py-2.5 text-xs text-salon-charcoal" />
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-[#877464] mb-2 font-semibold">Nomor WhatsApp</label>
+                <input required type="tel" x-model="bookingForm.phone" placeholder="0812-XXXX-XXXX" class="w-full bg-[#FAF7F2] border border-[#E8DFD0] focus:border-salon-gold focus:outline-none rounded px-3 py-2.5 text-xs text-salon-charcoal" />
+              </div>
+
+              <!-- Live pricing breakdowns -->
+              <div class="bg-salon-cream/60 border border-[#E8DFD0]/60 rounded-2xl p-4 text-xs space-y-3 font-light">
+                <div class="flex justify-between">
+                  <span class="text-neutral-500">Layanan Pokok</span>
+                  <span class="font-bold text-salon-charcoal" x-text="selectedService ? selectedService.name : '-'"></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-neutral-500">Stylist Utama</span>
+                  <span class="font-bold text-salon-charcoal" x-text="selectedStylist ? selectedStylist.name : '-'"></span>
+                </div>
+                <div class="flex justify-between" x-show="selectedAddons.length > 0">
+                  <span class="text-neutral-500">Ekstra Tambahan</span>
+                  <span class="font-bold text-salon-charcoal" x-text="formatRupiah(getAddonsSubtotal())"></span>
+                </div>
+                <div class="flex justify-between pt-3 border-t border-[#E8DFD0] font-bold text-sm text-[#2B231D]">
+                  <span>Total Harga Sesi</span>
+                  <span class="text-salon-gold" x-text="formatRupiah(getFinalTotal())"></span>
+                </div>
+              </div>
+
+              <button type="submit"
+                      :disabled="!selectedService || !selectedStylist || !selectedTimeSlot"
+                      :class="(!selectedService || !selectedStylist || !selectedTimeSlot) ? 'bg-[#DBCAB4] text-white cursor-not-allowed' : 'bg-salon-gold hover:bg-[#B3936A] text-white cursor-pointer'"
+                      class="w-full font-bold uppercase tracking-widest py-4 text-xs rounded-full transition-all shadow-md">
+                Konfirmasi Jadwal Kecantikan
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </template>
+
+  </main>
+
+  <!-- 🎟️ Appointment confirmation Modal card -->
+  <div class="fixed inset-0 z-50 flex items-center justify-center overflow-hidden p-6" x-show="receiptOpen" x-cloak>
+    <!-- Overlay backdrop -->
+    <div class="absolute inset-0 bg-black/75 transition-opacity duration-300" @click="receiptOpen = false"></div>
+
+    <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-8 relative z-10 text-center"
+         x-show="receiptOpen"
+         x-transition:enter="ease-out duration-300 transform"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="ease-in duration-200 transform">
+      
+      <!-- Icon check -->
+      <div class="w-16 h-16 bg-salon-rose border border-salon-gold rounded-full flex items-center justify-center mx-auto mb-6 text-salon-gold animate-bounce">
+        <span class="material-symbols-outlined text-3xl font-fill">verified</span>
+      </div>
+
+      <h2 class="font-serif text-3xl text-salon-charcoal">Jadwal Direservasi!</h2>
+      <p class="text-neutral-400 text-xs mt-2">Kode Appointment: <strong class="text-black" x-text="receipt.code"></strong></p>
+
+      <!-- Ticket Details -->
+      <div class="bg-salon-cream border border-[#E8DFD0] rounded-2xl p-5 my-6 text-left space-y-3.5 text-xs font-light">
+        <div class="flex justify-between border-b border-[#E8DFD0] pb-2 font-bold text-salon-charcoal">
+          <span>Pelanggan</span>
+          <span class="text-salon-gold" x-text="receipt.name"></span>
+        </div>
+        <div class="flex justify-between text-neutral-500">
+          <span>Jenis Sesi</span>
+          <span class="font-bold text-salon-charcoal" x-text="receipt.serviceName"></span>
+        </div>
+        <div class="flex justify-between text-neutral-500">
+          <span>Stylist</span>
+          <span class="font-bold text-salon-charcoal" x-text="receipt.stylistName"></span>
+        </div>
+        <div class="flex justify-between text-neutral-500">
+          <span>Tanggal & Jam</span>
+          <span class="font-bold text-salon-charcoal" x-text="receipt.date + ' @ ' + receipt.time"></span>
+        </div>
+        <div class="flex justify-between pt-3 border-t border-[#E8DFD0] font-bold text-sm text-[#2B231D]">
+          <span>Total Pembayaran</span>
+          <span class="text-salon-gold" x-text="formatRupiah(receipt.total)"></span>
+        </div>
+      </div>
+
+      <p class="text-[10px] text-neutral-400 mb-6 leading-relaxed">
+        Harap hadir 10 menit sebelum waktu janji temu Anda. Hubungi concierge kami jika Anda butuh perubahan waktu.
+      </p>
+
+      <button @click="receiptOpen = false" class="w-full bg-[#2D2722] hover:bg-[#3D352E] text-white font-bold uppercase tracking-widest py-3.5 text-xs rounded-full">Tutup & Selesai</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-salon-charcoal py-12 text-center text-[#9E9082] text-xs border-t border-neutral-900 mt-auto">
+    <p class="mb-2">&copy; 2026 Style & Glow. Dibuat menggunakan sistem premium DagangCommerce.</p>
+  </footer>
+
+  <script>
+    function salonState() {
+      return {
+        currentTab: 'home',
+        
+        // Dynamic Notification States
+        toast: { visible: false, title: '', message: '' },
+
+        // Appointment State Selection
+        selectedService: null,
+        selectedStylist: null,
+        selectedTimeSlot: null,
+        selectedAddons: [],
+        bookingForm: { date: '', name: '', phone: '' },
+
+        // Receipt States
+        receiptOpen: false,
+        receipt: {},
+
+        timeSlots: ['09:00 WIB', '11:00 WIB', '13:00 WIB', '15:00 WIB', '17:00 WIB', '19:00 WIB'],
+
+        stylists: [
+          { name: 'Raline Amanda', rating: '4.9', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80' },
+          { name: 'Diana Christie', rating: '4.8', image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=100&auto=format&fit=crop&q=80' },
+          { name: 'Jessica Aurelia', rating: '4.7', image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=100&auto=format&fit=crop&q=80' }
+        ],
+
+        services: [
+          { id: 1, name: 'Couture Haircut & Style', price: 120000, category: 'Haircut', desc: 'Pemotongan dan penataan rambut eksklusif disesuaikan dengan kontur wajah dan kepribadian unik Anda oleh Stylist Senior.', image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&auto=format&fit=crop&q=80' },
+          { id: 2, name: 'Revitalizing Kolagen Facial', price: 180000, category: 'Facial', desc: 'Perawatan hidrasi kulit intensif menggunakan serum kolagen alami untuk kulit wajah tampak cerah, kencang, dan bercahaya.', image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&auto=format&fit=crop&q=80' },
+          { id: 3, name: 'Luxury Aromatherapy Massage', price: 250000, category: 'Massage', desc: 'Relaksasi tubuh total dengan minyak esensial murni impor untuk melepaskan ketegangan otot dan menyeimbangkan energi.', image: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=600&auto=format&fit=crop&q=80' }
+        ],
+
+        addons: [
+          { id: 'add1', name: 'Collagen Serum Booster', price: 50000, desc: 'Ekstra hidrasi mendalam dengan kolagen murni.' },
+          { id: 'add2', name: 'Premium Jasmine Aromatherapy', price: 30000, desc: 'Minyak esensial melati impor kualitas terbaik.' },
+          { id: 'add3', name: 'Extra Scalp Treatment Massage', price: 40000, desc: 'Pijat relaksasi kulit kepala ekstra 15 menit.' }
+        ],
+
+        formatRupiah(val) {
+          return 'Rp ' + Number(val).toLocaleString('id-ID');
+        },
+
+        selectServiceForBooking(service) {
+          this.selectedService = service;
+          this.currentTab = 'book';
+          this.triggerToast("Layanan Terpilih", `${service.name} dipilih. Silakan lanjutkan memilih jadwal.`);
+        },
+
+        getAddonsSubtotal() {
+          let sum = 0;
+          this.selectedAddons.forEach(id => {
+            const add = this.addons.find(a => a.id === id);
+            if (add) sum += add.price;
+          });
+          return sum;
+        },
+
+        getFinalTotal() {
+          const base = this.selectedService ? this.selectedService.price : 0;
+          return base + this.getAddonsSubtotal();
+        },
+
+        triggerToast(title, message) {
+          this.toast.title = title;
+          this.toast.message = message;
+          this.toast.visible = true;
+
+          setTimeout(() => {
+            this.toast.visible = false;
+          }, 3000);
+        },
+
+        submitBooking() {
+          if (!this.selectedService || !this.selectedStylist || !this.selectedTimeSlot) return;
+
+          const appCode = 'SG-' + Math.floor(100000 + Math.random() * 900000);
+          this.receipt = {
+            code: appCode,
+            name: this.bookingForm.name,
+            serviceName: this.selectedService.name,
+            stylistName: this.selectedStylist.name,
+            date: this.bookingForm.date,
+            time: this.selectedTimeSlot,
+            total: this.getFinalTotal()
+          };
+
+          this.receiptOpen = true;
+
+          // Reset selection states
+          this.selectedService = null;
+          this.selectedStylist = null;
+          this.selectedTimeSlot = null;
+          this.selectedAddons = [];
+          this.bookingForm = { date: '', name: '', phone: '' };
+        }
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bistro Brew - Cozy Cafe & Coffee Shop Template</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          },
+          colors: {
+            bistro: {
+              amber: '#E89E58',
+              coffee: '#1E1915',
+              darker: '#16120F',
+              cream: '#FAF6F0'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    [x-cloak] { display: none !important; }
+  </style>
+</head>
+<body class="bg-[#1E1915] text-[#FAF6F0] font-sans min-h-screen flex flex-col antialiased selection:bg-[#E89E58] selection:text-[#1E1915]"
+      x-data="bistroState()">
+
+  <!-- 🔔 Global Notification Toast -->
+  <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 max-w-sm pointer-events-none">
+    <div x-show="toast.visible"
+         x-transition:enter="transition ease-out duration-300 transform"
+         x-transition:enter-start="translate-y-2 opacity-0 scale-95"
+         x-transition:enter-end="translate-y-0 opacity-100 scale-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="bg-[#16120F] border border-[#E89E58]/30 text-white rounded-lg px-4 py-3.5 shadow-2xl flex items-center gap-3 pointer-events-auto">
+      <span class="material-symbols-outlined text-[#E89E58]">local_cafe</span>
+      <div class="flex-grow text-xs text-left">
+        <p class="font-bold text-[#E89E58]" x-text="toast.title"></p>
+        <p class="text-stone-400 mt-0.5" x-text="toast.message"></p>
+      </div>
+      <button @click="toast.visible = false" class="text-stone-400 hover:text-white">
+        <span class="material-symbols-outlined text-lg">close</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 🧭 Sticky Header -->
+  <header class="fixed top-0 left-0 w-full z-40 bg-[#1E1915]/95 backdrop-blur-xl border-b border-[#352B24]">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+      <!-- Logo -->
+      <a href="#" @click.prevent="currentTab = 'home'" class="font-serif text-2xl font-bold tracking-wide text-[#E89E58]">
+        BISTRO BREW
+      </a>
+
+      <!-- Navigation links (tabs clickable switching) -->
+      <nav class="hidden md:flex space-x-10 text-xs font-semibold tracking-[0.2em] uppercase text-[#BCB2A6]">
+        <a href="#" @click.prevent="currentTab = 'home'" :class="currentTab === 'home' ? 'text-[#E89E58] border-b border-[#E89E58] pb-1' : 'hover:text-[#E89E58] transition-colors'">Beranda</a>
+        <a href="#" @click.prevent="currentTab = 'menu'" :class="currentTab === 'menu' ? 'text-[#E89E58] border-b border-[#E89E58] pb-1' : 'hover:text-[#E89E58] transition-colors'">Menu Seduhan</a>
+        <a href="#" @click.prevent="currentTab = 'visit'" :class="currentTab === 'visit' ? 'text-[#E89E58] border-b border-[#E89E58] pb-1' : 'hover:text-[#E89E58] transition-colors'">Kunjungi Kami</a>
+      </nav>
+
+      <!-- Tray button with reactive order count badge -->
+      <button @click="currentTab = 'menu'" class="relative flex items-center gap-1.5 py-1.5 px-3 rounded-full bg-[#16120F] border border-[#352B24] text-xs font-bold text-[#E89E58]">
+        <span class="material-symbols-outlined text-sm">local_cafe</span>
+        <span>Tray (<span x-text="orderCount()">0</span>)</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 🧖‍♀️ Router screens -->
+  <main class="flex-grow pt-24">
+
+    <!-- Screen 1: Home Page -->
+    <template x-if="currentTab === 'home'">
+      <div>
+        <!-- Hero section -->
+        <section class="relative min-h-[85vh] flex items-center justify-center px-6 overflow-hidden bg-gradient-to-b from-[#1E1915] to-[#16120F]">
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(232,158,88,0.06)_0%,transparent_70%)]"></div>
+          <div class="relative max-w-4xl mx-auto text-center z-10 px-4">
+            <span class="text-[#E89E58] font-bold tracking-[0.3em] uppercase text-xs block mb-4 font-semibold">SEDUHAN KOPI ARTISAN AUTENTIK</span>
+            <h1 class="font-serif text-5xl md:text-8xl font-bold mb-8 leading-tight text-white italic">
+              Hangatnya Kopi, Akrabnya Cerita
+            </h1>
+            <p class="text-[#BCB2A6] text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+              Temukan ruang ternyaman Anda untuk bekerja, bercengkrama, atau menikmati sore tenang dengan secangkir kopi arabika pilihan Nusantara.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <button @click="currentTab = 'menu'" class="bg-[#E89E58] hover:bg-[#CF843E] text-[#1E1915] px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest transition-all hover:scale-105 shadow-md">Lihat Pilihan Seduhan</button>
+              <button @click="currentTab = 'visit'" class="border border-[#4E3F35] hover:border-[#E89E58] hover:text-[#E89E58] text-[#FAF6F0] px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest transition-all">Petunjuk Lokasi</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="py-20 bg-[#16120F] border-y border-[#352B24] text-center">
+          <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div>
+              <div class="font-serif text-4xl font-bold text-[#E89E58] mb-2">100%</div>
+              <div class="text-[#BCB2A6] text-[10px] font-bold uppercase tracking-widest">Arabika Nusantara Asli</div>
+            </div>
+            <div>
+              <div class="font-serif text-4xl font-bold text-[#E89E58] mb-2">Rp 25k</div>
+              <div class="text-[#BCB2A6] text-[10px] font-bold uppercase tracking-widest">Harga Dasar Bersahabat</div>
+            </div>
+            <div>
+              <div class="font-serif text-4xl font-bold text-[#E89E58] mb-2">5 Pilihan</div>
+              <div class="text-[#BCB2A6] text-[10px] font-bold uppercase tracking-widest">Sajian Pastri Hangat</div>
+            </div>
+            <div>
+              <div class="font-serif text-4xl font-bold text-[#E89E58] mb-2">24 Jam</div>
+              <div class="text-[#BCB2A6] text-[10px] font-bold uppercase tracking-widest">Koneksi Internet Kencang</div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </template>
+
+    <!-- Screen 2: Interactive Menu Ordering -->
+    <template x-if="currentTab === 'menu'">
+      <section class="py-20 px-6 bg-[#1E1915]">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          
+          <!-- Left: Menu List with category tabs -->
+          <div class="lg:col-span-8 space-y-8 text-left">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-[#352B24] pb-6">
+              <div>
+                <span class="text-[#E89E58] font-bold tracking-[0.25em] text-xs uppercase">BISTRO CHALKBOARD</span>
+                <h2 class="font-serif text-4xl font-bold italic mt-1 text-white">Seduhan & Cemilan</h2>
+              </div>
+              
+              <!-- Menu Category tabs -->
+              <div class="flex gap-4 text-xs font-semibold uppercase tracking-wider">
+                <template x-for="cat in ['Semua', 'Espresso', 'Pastry']">
+                  <button @click="selectedMenuCategory = cat"
+                          :class="selectedMenuCategory === cat ? 'text-[#E89E58] border-b border-[#E89E58]' : 'text-[#BCB2A6] hover:text-white'"
+                          class="pb-1 transition-all focus:outline-none"
+                          x-text="cat"></button>
+                </template>
+              </div>
+            </div>
+
+            <!-- Products grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <template x-for="item in getFilteredItems()" :key="item.id">
+                <div class="bg-[#16120F] border border-[#352B24] rounded-2xl p-5 flex gap-4 hover:border-[#E89E58]/40 transition-all duration-300 group cursor-pointer"
+                     @click="addToOrderTray(item)">
+                  <!-- Image thumbnail -->
+                  <div class="w-20 h-20 bg-[#352B24] rounded-xl overflow-hidden flex-shrink-0">
+                    <img :src="item.image" :alt="item.name" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  </div>
+                  <!-- detail -->
+                  <div class="flex-grow flex flex-col justify-between">
+                    <div>
+                      <div class="flex justify-between items-start">
+                        <h4 class="font-serif text-base font-bold text-white group-hover:text-[#E89E58] transition-colors" x-text="item.name"></h4>
+                        <span class="text-xs font-bold text-[#E89E58]" x-text="formatRupiah(item.price)"></span>
+                      </div>
+                      <p class="text-stone-400 text-xs mt-1.5 line-clamp-2 font-light" x-text="item.desc"></p>
+                    </div>
+                    <span class="text-[9px] font-bold text-stone-500 uppercase mt-2 tracking-wider text-left" x-text="item.category"></span>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- Right: Order tray list / Checkout billing -->
+          <div class="lg:col-span-4 bg-[#16120F] border border-[#352B24] rounded-3xl p-6 text-left">
+            <h3 class="font-serif text-xl text-[#FAF6F0] mb-6 border-b border-[#352B24] pb-3 flex justify-between items-center">
+              <span>Tray Pesanan</span>
+              <span class="text-xs bg-[#E89E58] text-[#1E1915] px-2 py-0.5 rounded font-bold" x-text="orderCount()">0</span>
+            </h3>
+
+            <!-- Order tray lists -->
+            <template x-if="tray.length === 0">
+              <div class="py-16 text-center text-stone-500 text-xs">
+                <span class="material-symbols-outlined text-3xl mb-2">local_cafe</span>
+                <p>Tray belanja Anda kosong.</p>
+                <p class="mt-1">Pilih menu seduhan lezat di sebelah kiri.</p>
+              </div>
+            </template>
+
+            <div class="divide-y divide-[#352B24] max-h-64 overflow-y-auto no-scrollbar pr-1">
+              <template x-for="item in tray" :key="item.id">
+                <div class="py-3 flex justify-between items-center text-xs">
+                  <div>
+                    <h5 class="font-bold text-[#FAF6F0]" x-text="item.name"></h5>
+                    <div class="flex gap-2 text-[10px] text-stone-500 mt-1">
+                      <button @click="adjustTrayQty(item, -1)" class="hover:text-white">-</button>
+                      <span x-text="item.qty + ' Porsi'"></span>
+                      <button @click="adjustTrayQty(item, 1)" class="hover:text-white">+</button>
+                    </div>
+                  </div>
+                  <span class="font-bold text-[#E89E58]" x-text="formatRupiah(item.price * item.qty)"></span>
+                </div>
+              </template>
+            </div>
+
+            <!-- Billing Totals -->
+            <div class="border-t border-[#352B24] pt-4 mt-6 space-y-2 text-xs" x-show="tray.length > 0">
+              <div class="flex justify-between text-stone-400">
+                <span>Subtotal</span>
+                <span class="font-semibold text-white" x-text="formatRupiah(getTraySubtotal())"></span>
+              </div>
+              <div class="flex justify-between text-stone-400">
+                <span>Pajak Restoran PPN (10%)</span>
+                <span class="font-semibold text-white" x-text="formatRupiah(getTraySubtotal() * 0.1)"></span>
+              </div>
+              <div class="flex justify-between pt-3 border-t border-[#352B24] font-bold text-sm text-[#E89E58]">
+                <span>Total Biaya</span>
+                <span x-text="formatRupiah(getTraySubtotal() * 1.1)"></span>
+              </div>
+
+              <!-- Action print ticket -->
+              <button @click="printBistroBill()" class="w-full bg-[#E89E58] hover:bg-[#CF843E] text-[#1E1915] font-bold uppercase tracking-widest py-3.5 mt-6 rounded text-xs transition-all">
+                Cetak Struk Tagihan
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- Screen 3: Contact / Location Details -->
+    <template x-if="currentTab === 'visit'">
+      <section class="py-24 px-6 bg-[#16120F]">
+        <div class="max-w-4xl mx-auto text-center space-y-12">
+          <div class="max-w-xl mx-auto">
+            <span class="text-[#E89E58] font-bold tracking-[0.25em] text-xs uppercase block mb-4">VISIT OUR CAFE</span>
+            <h1 class="font-serif text-4xl md:text-6xl font-bold italic text-white mb-6">Nikmati Kopi Santai Bersama Kami</h1>
+            <p class="text-stone-400 text-sm font-light leading-relaxed">Kami menyambut kehadiran Anda setiap hari untuk bersantai, membaca buku, bekerja jarak jauh, atau berkumpul hangat.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left max-w-2xl mx-auto">
+            <div class="bg-[#1E1915] border border-[#352B24] rounded-2xl p-6 flex gap-4">
+              <span class="text-[#E89E58] font-bold font-serif text-lg">A:</span>
+              <div>
+                <h4 class="font-bold text-white mb-1">Alamat Utama Flagship</h4>
+                <p class="text-stone-400 text-xs">Jl. Senopati Raya No. 42, Kebayoran Baru, Jakarta Selatan, 12190</p>
+              </div>
+            </div>
+            
+            <div class="bg-[#1E1915] border border-[#352B24] rounded-2xl p-6 flex gap-4">
+              <span class="text-[#E89E58] font-bold font-serif text-lg">J:</span>
+              <div>
+                <h4 class="font-bold text-white mb-1">Jam Operasional Cafe</h4>
+                <p class="text-stone-400 text-xs">Senin - Minggu: 07:00 - 22:00 WIB (Akhir Pekan tutup jam 23:00 WIB)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </template>
+
+  </main>
+
+  <!-- 🎟️ Bistro Chalkboard Bill Ticket Modal -->
+  <div class="fixed inset-0 z-50 flex items-center justify-center overflow-hidden p-6" x-show="receiptOpen" x-cloak>
+    <!-- Overlay backdrop -->
+    <div class="absolute inset-0 bg-black/85 transition-opacity duration-300" @click="receiptOpen = false"></div>
+
+    <div class="bg-[#1E1915] border border-[#E89E58]/30 rounded-3xl shadow-2xl max-w-sm w-full p-8 relative z-10 text-center"
+         x-show="receiptOpen"
+         x-transition:enter="ease-out duration-300 transform"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="ease-in duration-200 transform">
+      
+      <!-- Icon check -->
+      <div class="w-16 h-16 bg-[#E89E58]/10 border border-[#E89E58]/40 rounded-full flex items-center justify-center mx-auto mb-6 text-[#E89E58]">
+        <span class="material-symbols-outlined text-3xl font-fill">local_cafe</span>
+      </div>
+
+      <h2 class="font-serif text-3xl italic text-white">Struk Tagihan Bistro</h2>
+      <p class="text-stone-400 text-xs mt-2">Nomor Invoice: <strong class="text-[#FAF6F0]" x-text="receipt.code"></strong></p>
+
+      <!-- Ticket detail box -->
+      <div class="bg-[#16120F] border border-[#352B24] rounded-2xl p-5 my-6 text-left space-y-3.5 text-xs font-light">
+        <div class="flex justify-between border-b border-[#352B24] pb-2 font-bold text-white">
+          <span>Toko</span>
+          <span class="text-[#E89E58]">BISTRO BREW SENOPATI</span>
+        </div>
+        
+        <!-- Items in bill list -->
+        <div class="space-y-2 border-b border-[#352B24] pb-3">
+          <template x-for="item in receipt.items" :key="item.id">
+            <div class="flex justify-between text-[11px] text-stone-300">
+              <span x-text="item.name + ' x' + item.qty"></span>
+              <span x-text="formatRupiah(item.price * item.qty)"></span>
+            </div>
+          </template>
+        </div>
+
+        <div class="flex justify-between text-stone-400">
+          <span>Subtotal Tagihan</span>
+          <span class="font-bold text-white" x-text="formatRupiah(receipt.subtotal)"></span>
+        </div>
+        <div class="flex justify-between text-stone-400">
+          <span>PPN Pajak Resto (10%)</span>
+          <span class="font-bold text-white" x-text="formatRupiah(receipt.subtotal * 0.1)"></span>
+        </div>
+        
+        <div class="flex justify-between pt-3 border-t border-[#352B24] font-bold text-sm text-[#E89E58]">
+          <span>Total Akhir Pembayaran</span>
+          <span x-text="formatRupiah(receipt.total)"></span>
+        </div>
+      </div>
+
+      <p class="text-[10px] text-stone-500 mb-6 leading-relaxed">
+        Terima kasih atas kunjungan Anda ke Bistro Brew! Struk pembayaran digital ini juga dikirimkan melalui notifikasi.
+      </p>
+
+      <button @click="receiptOpen = false" class="w-full bg-[#E89E58] hover:bg-[#CF843E] text-[#1E1915] font-bold uppercase tracking-widest py-3.5 text-xs rounded">Tutup & Selesai</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-[#16120F] py-12 text-center text-stone-600 text-xs border-t border-[#352B24]/40 mt-auto">
+    <p class="mb-2">&copy; 2026 Bistro Brew. Dibuat menggunakan platform premium DagangCommerce.</p>
+  </footer>
+
+  <script>
+    function bistroState() {
+      return {
+        currentTab: 'home',
+        selectedMenuCategory: 'Semua',
+        
+        // Notifications
+        toast: { visible: false, title: '', message: '' },
+
+        // Orders Tray State
+        tray: [],
+
+        // Receipt States
+        receiptOpen: false,
+        receipt: {},
+
+        items: [
+          { id: 1, name: 'Vanilla Bourbon Latte', price: 35000, category: 'Espresso', desc: 'Esens vanilla bourbon Madagaskar premium, dipadukan dengan espresso arabika double shot dan susu oat creami terhangat.', image: 'https://images.unsplash.com/photo-1497515114629-f71d768fd07c?w=600&auto=format&fit=crop&q=80' },
+          { id: 2, name: 'Single Origin Pour Over V60', price: 30000, category: 'Espresso', desc: 'Kopi arabika single origin pilihan dari lereng Gunung Gayo Aceh atau Kintamani Bali diseduh presisi dengan metode V60.', image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&auto=format&fit=crop&q=80' },
+          { id: 3, name: 'Butter Almond Croissant', price: 28000, category: 'Pastry', desc: 'Croissant renyah berlapis mentega Prancis murni, diisi dengan krim almond manis dan taburan kacang almond.', image: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=600&auto=format&fit=crop&q=80' },
+          { id: 4, name: 'Velvety Double Chocolate Brownie', price: 26000, category: 'Pastry', desc: 'Brownies panggang cokelat hitam murni dengan taburan chocolate chip leleh yang sangat lezat di tengah.', image: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=600&auto=format&fit=crop&q=80' }
+        ],
+
+        getFilteredItems() {
+          if (this.selectedMenuCategory === 'Semua') return this.items;
+          return this.items.filter(i => i.category === this.selectedMenuCategory);
+        },
+
+        formatRupiah(val) {
+          return 'Rp ' + Number(val).toLocaleString('id-ID');
+        },
+
+        addToOrderTray(item) {
+          const existing = this.tray.find(t => t.id === item.id);
+          if (existing) {
+            existing.qty++;
+          } else {
+            this.tray.push({ ...item, qty: 1 });
+          }
+
+          this.triggerToast("Menu Ditambahkan", `${item.name} berhasil dimasukkan ke nampan pesanan.`);
+        },
+
+        adjustTrayQty(item, step) {
+          const found = this.tray.find(t => t.id === item.id);
+          if (found) {
+            found.qty += step;
+            if (found.qty <= 0) {
+              this.tray = this.tray.filter(t => t.id !== item.id);
+            }
+          }
+        },
+
+        orderCount() {
+          return this.tray.reduce((sum, item) => sum + item.qty, 0);
+        },
+
+        getTraySubtotal() {
+          return this.tray.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        },
+
+        triggerToast(title, message) {
+          this.toast.title = title;
+          this.toast.message = message;
+          this.toast.visible = true;
+
+          setTimeout(() => {
+            this.toast.visible = false;
+          }, 3000);
+        },
+
+        printBistroBill() {
+          if (this.tray.length === 0) return;
+
+          const invCode = 'BB-' + Math.floor(100000 + Math.random() * 900000);
+          const sub = this.getTraySubtotal();
+          this.receipt = {
+            code: invCode,
+            items: [...this.tray],
+            subtotal: sub,
+            total: sub * 1.1
+          };
+
+          this.receiptOpen = true;
+
+          // Reset tray
+          this.tray = [];
+        }
+      }
+    }
+  </script>
+</body>
+</html>
